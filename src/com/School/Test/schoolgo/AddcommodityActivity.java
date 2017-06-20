@@ -53,10 +53,13 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-//import org.apache.commons.httpclient.HttpClient;
-//import org.apache.commons.httpclient.HttpStatus;
-//import org.apache.commons.httpclient.methods.multipart.MultipartRequestEntity;
-//import org.apache.commons.httpclient.methods.multipart.Part;
+import org.apache.commons.httpclient.HttpClient;
+import org.apache.commons.httpclient.HttpStatus;
+import org.apache.commons.httpclient.methods.PostMethod;
+import org.apache.commons.httpclient.methods.multipart.FilePart;
+import org.apache.commons.httpclient.methods.multipart.MultipartRequestEntity;
+import org.apache.commons.httpclient.methods.multipart.Part;
+import org.apache.commons.httpclient.methods.multipart.StringPart;
 
 public class AddcommodityActivity extends Activity implements OnClickListener{
 	Bitmap bm;
@@ -335,7 +338,7 @@ public void uploadThreadTest2() {
         public void run() {
 
             try {
-            	//PostDate();
+            	PostDate();
             	//发送数据
             	//Map<String, String>map=new HashMap<String, String>();
             	//map.put("name","sun");
@@ -442,7 +445,7 @@ private Options getBitmapOption(int inSampleSize){
 }
 
 
-/*public void PostDate(){
+public void PostDate(){
 	String targetURL = null;// TODO 指定URL
 	   
 	   targetURL = StreamTools.ip+"/SchoolGoServer/UploadHandleServlet2"; //servleturl
@@ -480,7 +483,7 @@ private Options getBitmapOption(int inSampleSize){
 	    filePost.releaseConnection();
 	   }
 	
-}*/
+}
 
 
 }
