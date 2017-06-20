@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+    <LinearLayout 
+        android:layout_height="50dp"
+        android:layout_width="match_parent"
+        android:background="#FF7F24"
+        android:gravity="center"
+        >
+        <TextView 
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#ffffff"
+            android:textSize="23dp"
+            android:text="宝贝详情"
+            
+            />
+    </LinearLayout>
+
+    <ScrollView 
+        android:layout_weight="1"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp" 
+        >
+    
+    
+    <LinearLayout 
+        android:layout_height="fill_parent"
+        android:layout_width="match_parent"
+        android:orientation="vertical"
+        >
+        
+<LinearLayout 
+    android:layout_width="match_parent"
+    android:layout_height="50dp"
+    >
+    <com.School.Test.ImageUtil.RoundImageView
+        android:id="@+id/portrait"
+        android:layout_marginTop="2dp"
+               android:layout_marginLeft="10dp"
+          android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:src="@drawable/back"
+           />
+    <LinearLayout 
+        android:layout_height="match_parent"
+        android:layout_width="wrap_content"
+        android:orientation="vertical"
+         android:layout_marginLeft="5dp"
+        >
+        <TextView 
+            android:id="@+id/dname"
+            android:layout_marginTop="7dp"
+            android:layout_width="wrap_content"
+            android:textSize="14.5dp"
+            android:layout_height="wrap_content"
+            android:text="孙文斌"
+            />
+        <TextView 
+            android:id="@+id/dtime"
+            android:textColor="#ADADAD"
+            android:textSize="12dp"
+            android:layout_marginTop="6dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="1分钟前"
+            />
+    </LinearLayout>
+    <View 
+        android:layout_weight="1"
+        android:layout_height="wrap_content"
+        android:layout_width="0dp"
+        />
+    <LinearLayout 
+        android:layout_height="match_parent"
+        android:layout_width="wrap_content"
+        android:orientation="vertical"
+         android:layout_marginLeft="5dp"
+        >
+        <TextView 
+            android:id="@+id/dyijia"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="7dp"
+            android:layout_width="wrap_content"
+             android:textSize="12dp"
+            android:layout_height="wrap_content"
+            android:text="一口价"
+            />
+        <TextView 
+            android:id="@+id/dmoney"
+            android:textColor="#DC143C"
+            android:textSize="16dp"
+            android:layout_marginTop="6dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="200元"
+            />
+    </LinearLayout>
+</LinearLayout>
+<TextView 
+    android:id="@+id/dcontext"
+    android:layout_marginLeft="20dp"
+    android:layout_marginRight="20dp"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:text="这里是内容这里是内容这里是内容这里是内容这里是内容这里是内容这里是内容这里是内容这里是内容这里是内容这里是内容这里是内容这里是内容这里是内容这里是内容这里是内容这里是内容这里是内容"
+    />
+<ImageView 
+    android:id="@+id/dimage1"
+    android:scaleType="fitXY"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:src="@drawable/jiazaizhong"
+    />
+<ImageView 
+    android:id="@+id/dimage2"
+    android:layout_marginTop="5dp"
+    android:scaleType="fitXY"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:src="@drawable/jiazaizhong"
+    />
+<ImageView 
+    android:id="@+id/dimage3"
+    android:layout_marginTop="5dp"
+    android:scaleType="fitXY"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:src="@drawable/jiazaizhong"
+    />
+<View 
+    android:layout_marginTop="10dp"
+    android:layout_width="match_parent"
+    android:layout_height="20dp"
+    android:background="#eeeeee"
+    />
+<LinearLayout 
+    android:layout_width="match_parent"
+    android:layout_height="40dp"
+    >
+    <ImageView 
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="5dp"
+        android:layout_width="25dp"
+        android:layout_height="30dp"
+        android:src="@drawable/liuyanban"
+        />
+    <TextView 
+        android:layout_marginLeft="3dp"
+        android:layout_marginTop="13dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="留言"
+        />
+</LinearLayout>
+<ListView 
+    android:id="@+id/dlist"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    ></ListView>
+</LinearLayout>
+
+</ScrollView>
+<LinearLayout 
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    
+    >
+    <Button 
+        android:id="@+id/lybtn"
+        android:textColor="#ffffff"
+        android:background="#4e6af5"
+        android:layout_weight="1"
+        android:layout_width="0dp"
+        android:layout_height="50dp"
+        android:text="留言"
+        />
+    <Button 
+         android:textColor="#ffffff"
+        android:background="#fd5b0b"
+        android:layout_weight="1"
+        android:layout_width="0dp"
+        android:layout_height="50dp"
+        android:text="我想要"
+        />
+    <Button 
+         android:textColor="#ffffff"
+        android:background="#ff0000"
+        android:layout_weight="1"
+        android:layout_width="0dp"
+        android:layout_height="50dp"
+        android:text="收藏"
+        />
+</LinearLayout>
+</LinearLayout>

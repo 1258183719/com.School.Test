@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center_horizontal"
+    android:background="#BEBEBE"
+    android:orientation="vertical" >
+    <LinearLayout 
+        android:layout_width="match_parent"
+        android:layout_height="170dp"
+        android:orientation="vertical"
+        android:gravity="center_vertical"
+        android:background="#778899"
+        >
+        <View 
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            />
+       <LinearLayout 
+           android:gravity="center_vertical"
+           android:layout_width="match_parent"
+           android:layout_height="0dp"
+           android:layout_weight="2.3"
+           >
+           <com.School.Test.ImageUtil.RoundImageView
+               android:layout_marginLeft="10dp"
+          android:layout_width="90dp"
+            android:layout_height="90dp"
+            android:src="@drawable/back"
+           />
+           <LinearLayout 
+               android:orientation="vertical"
+               android:layout_width="match_parent"
+               android:gravity="center_vertical"
+               android:layout_height="match_parent"
+               >
+               <TextView 
+                   android:gravity="center"
+                   android:layout_marginLeft="10dp"
+                   android:layout_marginTop="30dp"
+                   android:textColor="#ffffff"
+                   android:textSize="20dp"
+                   android:layout_width="40dp"
+                   android:layout_height="22dp"
+                   android:text="LV 3"
+                   android:background="@drawable/loginbutton"
+                   />
+               <TextView 
+                   android:gravity="center"
+                   android:layout_marginLeft="10dp"
+                   android:layout_marginTop="20dp"
+                   android:textColor="#ffffff"
+                   android:textSize="20dp"
+                   android:layout_width="90dp"
+                   android:layout_height="24dp"
+                   android:text="孙文斌"
+                   android:background="@drawable/loginbutton"
+                   />
+              
+           </LinearLayout>
+           
+       </LinearLayout>
+    </LinearLayout>
+    <View 
+        android:layout_marginTop="70dp"
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:background="#000000"
+        />
+      <TextView 
+          android:textSize="20dp"
+          android:gravity="center"
+          android:textColor="#738232"
+          android:layout_width="match_parent"
+          android:layout_height="50dp"
+          android:text="购物车"
+          />
+<View 
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:background="#000000"
+        />
+     <TextView 
+          android:textSize="20dp"
+          android:gravity="center"
+          android:textColor="#738232"
+          android:layout_width="match_parent"
+          android:layout_height="50dp"
+          android:text="待交易"
+          />
+<View 
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:background="#000000"
+        />
+
+
+</LinearLayout>
