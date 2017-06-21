@@ -1,42 +1,31 @@
 package com.School.Test.schoolgo;
 
-import java.io.BufferedReader;
+import java.io.BufferedOutputStream;
 import java.io.ByteArrayOutputStream;
-import java.io.DataOutputStream;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.UUID;
 
 import com.School.Test.HttpUtil.FormFile;
-import com.School.Test.HttpUtil.MyUploader;
-import com.School.Test.HttpUtil.SocketHttpRequester;
 import com.School.Test.HttpUtil.StreamTools;
-import com.School.Test.HttpUtil.UploadFileTask;
-
 import android.annotation.SuppressLint;
 import android.app.ActionBar;
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.graphics.Bitmap.CompressFormat;
 import android.graphics.BitmapFactory;
 import android.graphics.BitmapFactory.Options;
+import android.graphics.Matrix;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
@@ -56,32 +45,35 @@ import android.widget.Toast;
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.HttpStatus;
 import org.apache.commons.httpclient.methods.PostMethod;
+import org.apache.commons.httpclient.methods.multipart.ByteArrayPartSource;
 import org.apache.commons.httpclient.methods.multipart.FilePart;
 import org.apache.commons.httpclient.methods.multipart.MultipartRequestEntity;
 import org.apache.commons.httpclient.methods.multipart.Part;
 import org.apache.commons.httpclient.methods.multipart.StringPart;
 
 public class AddcommodityActivity extends Activity implements OnClickListener{
+	String imagePath1,imagePath2,imagePath3;
+	
 	Bitmap bm;
 	private FormFile[]formfiles=new FormFile[4];
 	private ArrayList<FormFile>ffs=new ArrayList<FormFile>();
 	private File []file=new File[3];
-	private int checked=0; //Ä¬ÈÏÊÇµÚÒ»ÕÅÍ¼
+	private int checked=0; //é»˜è®¤æ˜¯ç¬¬ä¸€å¼ å›¾
 	private Button fbbtn;
 	private EditText titleedt,contentedt,moneyedt; 
 	private LinearLayout yikou,keyi,mianyi,checkfl;
 	private ImageView image1,image2,image3;
 	private TextView xuanzefl;
-	private String fl="ÆäËû";
+	private String fl="å…¶ä»–";
 	private static int RESULT_LOAD_IMAGE = 1;
 	private int drawable=R.drawable.huangseanniu;
-	private String yijia="Ò»¿Ú¼Û";
+	private String yijia="ä¸€å£ä»·";
  private int i=0;
  byte[] b;
 @SuppressLint("NewApi")
 @Override
 protected void onCreate(Bundle savedInstanceState) {
-	// TODO ×Ô¶¯Éú³ÉµÄ·½·¨´æ¸ù
+	// TODO è‡ªåŠ¨ç”Ÿæˆçš„æ–¹æ³•å­˜æ ¹
 	super.onCreate(savedInstanceState);
 	setContentView(R.layout.addcommodityactivity);
 	ActionBar actionBar=getActionBar();
@@ -89,7 +81,7 @@ protected void onCreate(Bundle savedInstanceState) {
     Load();
     
 }
-//¼ÓÔØ×ÊÔ´
+//åŠ è½½èµ„æº
 public void Load(){
 	fbbtn=(Button) findViewById(R.id.fbbtn);
 	xuanzefl=(TextView) findViewById(R.id.xuanzefl);
@@ -120,22 +112,22 @@ public void Load(){
 }
 @Override
 public void onClick(View v) {
-	// TODO ×Ô¶¯Éú³ÉµÄ·½·¨´æ¸ù
+	// TODO è‡ªåŠ¨ç”Ÿæˆçš„æ–¹æ³•å­˜æ ¹
 	switch (v.getId()) {
 	case R.id.yikou:
-		yijia="Ò»¿Ú¼Û";
+		yijia="ä¸€å£ä»·";
 		yikou.setBackgroundResource(drawable);
 		mianyi.setBackgroundResource(0);
 		keyi.setBackgroundResource(0);
 		break;
 case R.id.keyi:
-	yijia="¿ÉÒé¼Û";
+	yijia="å¯è®®ä»·";
 	keyi.setBackgroundResource(drawable);
 mianyi.setBackgroundResource(0);
 yikou.setBackgroundResource(0);
 		break;
 case R.id.mianyi:
-	yijia="ÃæÒé";
+	yijia="é¢è®®";
 	mianyi.setBackgroundResource(drawable);
 yikou.setBackgroundResource(0);
 keyi.setBackgroundResource(0);
@@ -163,9 +155,9 @@ case R.id.image3:
     break;
 case R.id.checkfl:
 	 AlertDialog.Builder builder = new AlertDialog.Builder(AddcommodityActivity.this);
-     //    Ö¸¶¨ÏÂÀ­ÁĞ±íµÄÏÔÊ¾Êı¾İ
-     final String[] cities = {"ÆïĞĞ", "»­²Ä", "ÊıÂë", "ÆäËû"};
-     //    ÉèÖÃÒ»¸öÏÂÀ­µÄÁĞ±íÑ¡ÔñÏî
+     //    æŒ‡å®šä¸‹æ‹‰åˆ—è¡¨çš„æ˜¾ç¤ºæ•°æ®
+     final String[] cities = {"éª‘è¡Œ", "ç”»æ", "æ•°ç ", "å…¶ä»–"};
+     //    è®¾ç½®ä¸€ä¸ªä¸‹æ‹‰çš„åˆ—è¡¨é€‰æ‹©é¡¹
      builder.setItems(cities, new DialogInterface.OnClickListener()
      {
          @Override
@@ -173,7 +165,7 @@ case R.id.checkfl:
          {
         	 fl=cities[which];
         	 xuanzefl.setText(fl);
-             Toast.makeText(AddcommodityActivity.this, "ÄúÑ¡ÔñÁË" + cities[which], Toast.LENGTH_SHORT).show();
+             Toast.makeText(AddcommodityActivity.this, "æ‚¨é€‰æ‹©äº†" + cities[which], Toast.LENGTH_SHORT).show();
          }
      });
      builder.show();
@@ -181,94 +173,23 @@ case R.id.checkfl:
 case R.id.fbbtn:
 	
 	uploadThreadTest2();
-	//uploadThreadTest();
-	 /*SharedPreferences sp=getSharedPreferences("data",MODE_PRIVATE);
-	    final String name=sp.getString("name", "");
-	final String title=titleedt.getText().toString();
-	final String context=contentedt.getText().toString();
-	final String money=moneyedt.getText().toString();
-	final String fl=titleedt.getText().toString();
-	new Thread()
-	{
-		@Override
-		public void run()
-		{
-			try
-			{
-				InputStream is = null;
-			is = StreamTools.getByHttpConnection(name,title,context,yijia,money,fl);
-			final String res = StreamTools.StreamToString(is);
-			if (res != null)
-			{
-				// ²»Ê¹ÓÃhandlerµÄÁíÒ»ÖÖ·½Ê½
-				// ÕâÖÖ·½Ê½Ò²¿ÉÒÔ·â×°
-				runOnUiThread(new Runnable()
-				{
-
-					@Override
-					public void run()
-					{
-						Toast.makeText(AddcommodityActivity.this,res, 0).show();
-					//´ò¿ªÕ¹Ê¾½çÃæ
-						if(res.equals("µÇÂ¼³É¹¦£¡")){
-							
-						}
-					
-					}
-				});
-			} else
-			{
-			//	handler.sendMessage(StreamTools.getMsg(SHOWINFO, "Ê§°Ü"));
-			}
-			}catch (Exception e)
-			{
-				e.printStackTrace();
-			//	handler.sendMessage(StreamTools.getMsg(SHOWINFO, "»ñÈ¡Ê§°Ü"));
-			}
-		}}.start(); 
-		
-      for (int j = 0; j < imagepath.length; j++) {
-    	  UploadFileTask uploadFileTask = new UploadFileTask(this);  
-          //uploadFileTask.execute(imagepath[j]);  
-	}*/
 	break;
 	default:
 		break;
 	}
 	}
 
-//Ñ¹ËõÍ¼Æ¬
+//å‹ç¼©å›¾ç‰‡
 private void setImageBitmap(ImageView photoImageView,String photoPath){
- //»ñÈ¡imageviewµÄ¿íºÍ¸ß
- int targetWidth=photoImageView.getWidth()*2;
- int targetHeight=photoImageView.getHeight()*2;
-
- //¸ù¾İÍ¼Æ¬Â·¾¶£¬»ñÈ¡bitmapµÄ¿íºÍ¸ß
- BitmapFactory.Options options=new BitmapFactory.Options();
- options.inJustDecodeBounds=true;
- Bitmap bm= BitmapFactory.decodeFile(photoPath,options);
- int he=photoImageView.getHeight()/12;
- int wi=he*10;
- if(wi>photoImageView.getWidth()){
-	 wi=photoImageView.getWidth();
- }
- int photoWidth=options.outWidth;
- int photoHeight=options.outHeight;
-
- //»ñÈ¡Ëõ·Å±ÈÀı
- int inSampleSize=1;
- if(photoWidth>targetWidth||photoHeight>targetHeight){
-  int widthRatio=Math.round((float)photoWidth/targetWidth);
-  int heightRatio=Math.round((float)photoHeight/targetHeight);
-  inSampleSize=Math.min(widthRatio,heightRatio);
- }
-
- //Ê¹ÓÃÏÖÔÚµÄoptions»ñÈ¡Bitmap
- options.inSampleSize=inSampleSize;
- options.inJustDecodeBounds=false;
- Bitmap bitmap=BitmapFactory.decodeFile(photoPath,options);
-//Bitmap  bitmap2 = Bitmap.createBitmap(bitmap, 0, 0, wi, photoImageView.getHeight()); 
- photoImageView.setImageBitmap(bitmap);
+	 BitmapFactory.Options options=new BitmapFactory.Options();
+     options.inSampleSize=1;//ç›´æ¥è®¾ç½®å®ƒçš„å‹ç¼©ç‡ï¼Œè¡¨ç¤º1/2
+     Bitmap b=null;
+     try {
+         b=BitmapFactory.decodeFile(photoPath, options);
+     } catch (Exception e) {
+         e.printStackTrace();
+     }
+ photoImageView.setImageBitmap(b);
 }
 protected void onActivityResult(int requestCode, int resultCode, Intent data) {
     super.onActivityResult(requestCode, resultCode, data);
@@ -284,31 +205,29 @@ protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
         String picturePath = cursor.getString(columnIndex);
         cursor.close();
-       //Bitmap bitmap=decodeUriAsBitmap(selectedImage);
-        //TODO ÎÊÌâµã
-        
-        
-        bm=BitmapFactory.decodeFile(picturePath,getBitmapOption(2));
+        //TODO é—®é¢˜ç‚¹
+        BitmapFactory.Options options = new BitmapFactory.Options();  
+        Bitmap img = BitmapFactory.decodeFile(picturePath, options); 
+      Bitmap nowbitmap=imageZoom(img);  //ç°åœ¨çš„bitmap
+        bm=BitmapFactory.decodeFile(picturePath,getBitmapOption(1));
     	b= Bitmap2Bytes(bm);					
         switch (checked) {
 		case 0:
 			file[0]=new File(picturePath);
-			ffs.add(new FormFile("image1.jpg", b, "image1",null));
-			//formfiles[0]=new FormFile("image1.jpg", b, "image1",null);
-	        setImageBitmap(image1,picturePath);//ÉèÖÃÑ¹Ëõ²¢ÏÔÊ¾Í¼Æ¬
+			image1.setImageBitmap(nowbitmap);
+			imagePath1=saveImage("image1.jpg",nowbitmap);     //ä¿å­˜çœŸæ­£è¦ä¸Šä¼ çš„å›¾
 			break;
 case 1:
 	file[1]=new File(picturePath);
-	ffs.add(new FormFile("image2.jpg", b, "image2",null));
-	//formfiles[1]=new FormFile("image2.jpg", b, "image2",null);
- 	//formfiles[2]=new FormFile("image3.jpg", b, "image3",null);
- 	setImageBitmap(image2,picturePath);//ÉèÖÃÑ¹Ëõ²¢ÏÔÊ¾Í¼Æ¬
+	imagePath2=saveImage("image2.jpg",nowbitmap);     //ä¿å­˜çœŸæ­£è¦ä¸Šä¼ çš„å›¾
+	image2.setImageBitmap(nowbitmap);
+ 	//setImageBitmap(image2,picturePath);//è®¾ç½®å‹ç¼©å¹¶æ˜¾ç¤ºå›¾ç‰‡
 			break;
 case 2:
 	file[2]=new File(picturePath);
-	ffs.add(new FormFile("image3.jpg", b, "image3",null));
+	imagePath3=saveImage("image3.jpg",nowbitmap);     //ä¿å­˜çœŸæ­£è¦ä¸Šä¼ çš„å›¾
 	//formfiles[3]=new FormFile("image4.jpg", b, "image4",null);
-	 setImageBitmap(image3,picturePath);//ÉèÖÃÑ¹Ëõ²¢ÏÔÊ¾Í¼Æ¬
+	image3.setImageBitmap(nowbitmap);
 	break;
 
 		default:
@@ -318,20 +237,7 @@ case 2:
     }
 }
 
-//»ñµÃÂ·¾¶ÏÂµÄBitmap
-private Bitmap decodeUriAsBitmap(Uri uri) {
-    Bitmap bitmap = null;
-    try {
-        bitmap = BitmapFactory.decodeStream(getContentResolver().openInputStream(uri));
-    } catch (FileNotFoundException e) {
-        e.printStackTrace();
-        
-        return null;
-    }
-    return bitmap;
-}
-
-//¶àÎÄ¼şpost·½Ê½½øĞĞÌá½»
+//å¤šæ–‡ä»¶postæ–¹å¼è¿›è¡Œæäº¤
 public void uploadThreadTest2() {
     new Thread(new Runnable() {
         @Override
@@ -339,7 +245,7 @@ public void uploadThreadTest2() {
 
             try {
             	PostDate();
-            	//·¢ËÍÊı¾İ
+            	//å‘é€æ•°æ®
             	//Map<String, String>map=new HashMap<String, String>();
             	//map.put("name","sun");
             	//SocketHttpRequester.post(StreamTools.ip+"/SchoolGoServer/UploadHandleServlet2", map, ffs);
@@ -357,7 +263,7 @@ public void uploadThreadTest2() {
 
 
 /*
- * ÊµÏÖ¶àÎÄ¼şÉÏ´«
+ * å®ç°å¤šæ–‡ä»¶ä¸Šä¼ 
  */
 public void uploadThreadTest() {
     new Thread(new Runnable() {
@@ -375,60 +281,6 @@ public void uploadThreadTest() {
 
 }
 
-/*private void upload() {
-    String url = StreamTools.ip+"/SchoolGoServer/UploadHandleServlet";
-    List<String> fileList = getCacheFiles();
-    for (String string : imagepath) {
-		fileList.add(string);
-	}
-    if (fileList == null) {
-        myHandler.sendEmptyMessage(-1);
-    }else {
-        MyUploader myUpload = new MyUploader();
-        //Í¬²½ÇëÇó£¬Ö±½Ó·µ»Ø½á¹û£¬¸ù¾İ½á¹ûÀ´ÅĞ¶ÏÊÇ·ñ³É¹¦¡£
-        String reulstCode = myUpload.MyUploadMultiFileSync(url, fileList, null);
-        myHandler.sendEmptyMessage(0);
-
-    }
-}*/
-
-private List<String> getCacheFiles() {
-    List<String> fileList = new ArrayList<String>();
-    File catchPath = AddcommodityActivity.this.getCacheDir();
-
-    if (catchPath!=null && catchPath.isDirectory()) {
-
-        File[] files = catchPath.listFiles();
-        if (files == null || files.length<1) {
-            return null;
-        }
-        for (int i = 0; i < files.length; i++) {
-            if (files[i].isFile() && files[i].getAbsolutePath().endsWith(".jpg")) {
-                fileList.add(files[i].getAbsolutePath());
-            }
-
-        }
-        return fileList;
-
-    }
-    return null;
-
-
-}
-////////////handler/////
-private Handler myHandler = new Handler() {
-    @Override
-    public void handleMessage(Message msg) {
-        if (msg.what == -1) {
-            Toast.makeText(AddcommodityActivity.this, "not find file!", Toast.LENGTH_LONG).show();
-            return;
-        }else {
-            Toast.makeText(AddcommodityActivity.this, "upload success!", Toast.LENGTH_LONG).show();
-        }
-
-    }
-
-};
 
 public static byte[] Bitmap2Bytes(Bitmap bm){    
     ByteArrayOutputStream baos = new ByteArrayOutputStream();    
@@ -445,37 +297,91 @@ private Options getBitmapOption(int inSampleSize){
 }
 
 
+
+
+
+//å‹ç¼©å›¾ç‰‡çš„æ–¹æ³•
+private Bitmap imageZoom(Bitmap bitMap) {
+    //å›¾ç‰‡å…è®¸æœ€å¤§ç©ºé—´   å•ä½ï¼šKB
+    double maxSize =400.00;
+    //å°†bitmapæ”¾è‡³æ•°ç»„ä¸­ï¼Œæ„åœ¨bitmapçš„å¤§å°ï¼ˆä¸å®é™…è¯»å–çš„åŸæ–‡ä»¶è¦å¤§ï¼‰  
+    ByteArrayOutputStream baos = new ByteArrayOutputStream();
+    bitMap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+    byte[] b = baos.toByteArray();
+    //å°†å­—èŠ‚æ¢æˆKB
+    double mid = b.length/1024;
+    //åˆ¤æ–­bitmapå ç”¨ç©ºé—´æ˜¯å¦å¤§äºå…è®¸æœ€å¤§ç©ºé—´  å¦‚æœå¤§äºåˆ™å‹ç¼© å°äºåˆ™ä¸å‹ç¼©
+    if (mid > maxSize) {
+            //è·å–bitmapå¤§å° æ˜¯å…è®¸æœ€å¤§å¤§å°çš„å¤šå°‘å€
+            double i = mid / maxSize;
+            //å¼€å§‹å‹ç¼©  æ­¤å¤„ç”¨åˆ°å¹³æ–¹æ ¹ å°†å®½å¸¦å’Œé«˜åº¦å‹ç¼©æ‰å¯¹åº”çš„å¹³æ–¹æ ¹å€ ï¼ˆ1.ä¿æŒåˆ»åº¦å’Œé«˜åº¦å’ŒåŸbitmapæ¯”ç‡ä¸€è‡´ï¼Œå‹ç¼©åä¹Ÿè¾¾åˆ°äº†æœ€å¤§å¤§å°å ç”¨ç©ºé—´çš„å¤§å°ï¼‰
+            bitMap = zoomImage(bitMap, bitMap.getWidth() / Math.sqrt(i),
+                            bitMap.getHeight() / Math.sqrt(i));
+    }
+    return bitMap;
+}
+
+public static Bitmap zoomImage(Bitmap bgimage, double newWidth,
+        double newHeight) {
+// è·å–è¿™ä¸ªå›¾ç‰‡çš„å®½å’Œé«˜
+float width = bgimage.getWidth();
+float height = bgimage.getHeight();
+// åˆ›å»ºæ“ä½œå›¾ç‰‡ç”¨çš„matrixå¯¹è±¡
+Matrix matrix = new Matrix();
+// è®¡ç®—å®½é«˜ç¼©æ”¾ç‡
+float scaleWidth = ((float) newWidth) / width;
+float scaleHeight = ((float) newHeight) / height;
+// ç¼©æ”¾å›¾ç‰‡åŠ¨ä½œ
+matrix.postScale(scaleWidth, scaleHeight);
+Bitmap bitmap = Bitmap.createBitmap(bgimage, 0, 0, (int) width,
+                (int) height, matrix, true);
+return bitmap;
+}
+
+
 public void PostDate(){
-	String targetURL = null;// TODO Ö¸¶¨URL
+	Log.e("error","è¿›æ¥äº†");
+	String targetURL = null;// TODO æŒ‡å®šURL
+	   SharedPreferences sp=getSharedPreferences("data", MODE_PRIVATE);
 	   
 	   targetURL = StreamTools.ip+"/SchoolGoServer/UploadHandleServlet2"; //servleturl
 	   PostMethod filePost = new PostMethod(targetURL);
-	   
+	   String name=ChangeCode("",sp.getString("name", "")).toString();
+	   String title=ChangeCode("",titleedt.getText().toString()).toString();
+	   String yijia2=ChangeCode("",yijia).toString();
+	   String content=ChangeCode("",contentedt.getText().toString()).toString();
+	   String money=ChangeCode("",moneyedt.getText().toString()).toString();
+	   String fl2=ChangeCode("",fl).toString();
 	   try
 	   {
-	 
-	  
-	   Part[] parts = {
-	    new FilePart("image1", file[0]),//ÎÄ¼ş1
-	    new FilePart("image2", file[1]),//ÎÄ¼ş2
-	    new FilePart("image3", file[2]),//ÎÄ¼ş3
-	    new StringPart("name","sunwenbin")
+	   Part[] parts = {	
+	    new FilePart("image1", new File(imagePath1)),//æ–‡ä»¶1
+	    new FilePart("image2", new File(imagePath2)),//æ–‡ä»¶2
+	    new FilePart("image3", new File(imagePath3)),//æ–‡ä»¶3
+	    new StringPart("name",name),
+	    new StringPart("title",title),
+	    new StringPart("yijia",yijia2),
+	    new StringPart("context",content),
+	    new StringPart("money",money),
+	    new StringPart("fl",fl2)
 	     };
+	   Log.e("error",file[1].toString());
 	    filePost.setRequestEntity(new MultipartRequestEntity(parts,filePost.getParams()));
 	    HttpClient client = new HttpClient();
 	    client.getHttpConnectionManager().getParams().setConnectionTimeout(5000);
 	    int status = client.executeMethod(filePost);
 	    if (status == HttpStatus.SC_OK)
 	    {
-	     System.out.println("ÉÏ´«³É¹¦");
+	     System.out.println("ä¸Šä¼ æˆåŠŸ");
 	    }
 	    else
 	    {
-	     System.out.println("ÉÏ´«Ê§°Ü");
+	     System.out.println("ä¸Šä¼ å¤±è´¥");
 	    }
 	   }
 	   catch (Exception ex)
 	   {
+		   Log.e("error","æ‰¾ä¸åˆ°æ–‡ä»¶");
 	    ex.printStackTrace();
 	   }
 	   finally
@@ -484,7 +390,46 @@ public void PostDate(){
 	   }
 	
 }
+public static StringBuilder ChangeCode(String title,String data){
+	StringBuilder sb = new StringBuilder();
+	try {
+		sb.append(title)
+		.append(URLEncoder.encode(data,"utf-8"));
+	} catch (UnsupportedEncodingException e) {
+		// TODO è‡ªåŠ¨ç”Ÿæˆçš„ catch å—
+		e.printStackTrace();
+	}
+return sb;
+}
 
-
+public  String saveImage(String Name,Bitmap bmp) {
+	File file;
+    File appDir = new File(Environment.getExternalStorageDirectory(),"imagedate");
+    if (!appDir.exists()) {
+        appDir.mkdir();
+    }
+    String fileName = Name;
+     file = new File(appDir, fileName);
+    try {
+        FileOutputStream fos = new FileOutputStream(file);
+        bmp.compress(CompressFormat.PNG, 100, fos);
+        fos.flush();
+        fos.close();
+    } catch (FileNotFoundException e) {
+        e.printStackTrace();
+    } catch (IOException e) {
+        e.printStackTrace();
+    }
+    return file.toString();
+}
+public static String getSDPath(){
+	  File sdDir = null;
+	  boolean sdCardExist = Environment.getExternalStorageState().equals(android.os.Environment.MEDIA_MOUNTED); //åˆ¤æ–­sdå¡æ˜¯å¦å­˜åœ¨
+	  if (sdCardExist)
+	  {
+	   sdDir = Environment.getExternalStorageDirectory();//è·å–è·Ÿç›®å½•
+	  }
+	  return sdDir.toString();   
+	 }
 }
 

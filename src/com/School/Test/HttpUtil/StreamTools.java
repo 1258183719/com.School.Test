@@ -18,7 +18,7 @@ import android.widget.Toast;
 public class StreamTools
 {
 	public static Activity activity;
-  public static String ip="http://192.168.6.102:8080";
+  public static String ip="http://192.168.1.106:8080";
 	public static String StreamToString(InputStream is)
 	{
 		try
