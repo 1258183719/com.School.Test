@@ -3,6 +3,7 @@
 	<name>School</name>
 	<comment></comment>
 	<projects>
+		<project>slidingmenu_library</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>

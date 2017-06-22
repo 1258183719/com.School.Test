@@ -18,7 +18,7 @@ import android.widget.Toast;
 public class StreamTools
 {
 	public static Activity activity;
-  public static String ip="http://192.168.1.106:8080";
+  public static String ip="http://192.168.43.137:8080";
 	public static String StreamToString(InputStream is)
 	{
 		try
@@ -90,6 +90,46 @@ public class StreamTools
 		conn.setConnectTimeout(5000);
 		return conn.getInputStream();
 	}
+	
+	
+	//提交下单申请
+		public static InputStream getByHttpConnection2(final String title,final String comdate, final String name,String fbz) throws UnsupportedEncodingException, MalformedURLException, IOException, ProtocolException
+		{
+			 StringBuilder title2 = new StringBuilder();
+			 title2.append("title=")
+			.append(URLEncoder.encode(title,"utf-8"));
+			 StringBuilder comdate2 = new StringBuilder();
+			 comdate2.append("&comdate=")
+				.append(URLEncoder.encode(comdate,"utf-8"));
+			 StringBuilder name2 = new StringBuilder();
+			 name2.append("&name=")
+				.append(URLEncoder.encode(name,"utf-8"));
+			 StringBuilder fbz2 = new StringBuilder();
+			 fbz2.append("&fbz=")
+				.append(URLEncoder.encode(fbz,"utf-8"));
+			 
+			 
+			 
+			HttpURLConnection conn;								
+			String path = ip+"/SchoolGoServer/WantServlet?" +title2+comdate2+name2+fbz2;
+			URL get_url = new URL(path);
+			System.out.println(path);
+			conn = (HttpURLConnection) get_url.openConnection();
+			conn.setRequestProperty("Charset", "UTF-8");
+	         // 设置文件类型
+			conn.setRequestProperty("Content-Type", "text/xml; charset=UTF-8");
+			
+			conn.setConnectTimeout(5000);
+			
+			return conn.getInputStream();
+		}
+	
+	
+	
+	
+	
+	
+	
 	
 	
 	

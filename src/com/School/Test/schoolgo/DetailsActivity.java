@@ -1,8 +1,11 @@
 package com.School.Test.schoolgo;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.lang.annotation.Annotation;
+import java.net.MalformedURLException;
+import java.net.ProtocolException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -22,6 +25,7 @@ import android.annotation.SuppressLint;
 import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.test.UiThreadTest;
 import android.util.Log;
@@ -43,7 +47,7 @@ public class DetailsActivity extends Activity {
 	private ListView lv;
 	ImageLoader imageLoader;
 	private List<Commod>list=new ArrayList<Commod>();
-	private Button lybtn;
+	private Button lybtn,wantbtn;
 @SuppressLint({ "ShowToast", "NewApi" })
 @Override
 protected void onCreate(Bundle savedInstanceState) {
@@ -62,8 +66,49 @@ protected void onCreate(Bundle savedInstanceState) {
 	dimage1=(ImageView) findViewById(R.id.dimage1);
 	dimage2=(ImageView) findViewById(R.id.dimage2);
 	dimage3=(ImageView) findViewById(R.id.dimage3);
+	wantbtn=(Button) findViewById(R.id.wantbtn);
 	lybtn=(Button) findViewById(R.id.lybtn);
 	lv=(ListView) findViewById(R.id.dlist);
+	wantbtn.setOnClickListener(new OnClickListener() {
+		
+		@Override
+		public void onClick(View v) {
+			// TODO 上传购买信息
+			SharedPreferences sp=getSharedPreferences("data",MODE_PRIVATE);
+		    final String name=sp.getString("name", "");
+			new Thread()
+			{
+				@Override
+				public void run()
+				{
+					try
+					{
+						InputStream is = null;
+					
+					is = StreamTools.getByHttpConnection2(comm.GetCommodity().getTitle(),comm.GetCommodity().getDate(),name,comm.GetCommodity().getUsername());    
+					final String res = StreamTools.StreamToString(is);
+					if (res != null)
+					{
+						// 不使用handler的另一种方式
+						// 这种方式也可以封装
+						runOnUiThread(new Runnable()
+						{
+							@Override
+							public void run()
+							{
+								Toast.makeText(DetailsActivity.this,res, 0).show();
+							}
+						});
+					}
+					}catch (Exception e)
+					{
+						e.printStackTrace();
+					}
+				}}.start();
+		}
+	});
+	
+	
 	lybtn.setOnClickListener(new OnClickListener() {
 		
 		@Override
@@ -261,5 +306,7 @@ public String GetDate(String date){
 	}
 	  return date;
 }
-
+public void back(){
+	finish();
+}
 }

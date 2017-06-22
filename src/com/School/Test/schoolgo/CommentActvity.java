@@ -9,7 +9,8 @@ import java.util.Calendar;
 
 import com.School.Test.HttpUtil.StreamTools;
 import com.School.Test.tools.CommoditySingle;
-
+import android.annotation.SuppressLint;
+import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -25,11 +26,14 @@ public class CommentActvity extends Activity {
 	private EditText ccontext;
 	private Button fsbtn;
 	private CommoditySingle comm;
+@SuppressLint("NewApi")
 @Override
 protected void onCreate(Bundle savedInstanceState) {
 	// TODO 自动生成的方法存根
 	super.onCreate(savedInstanceState);
 setContentView(R.layout.comment);
+ActionBar actionBar=getActionBar();
+actionBar.hide();
 comm=CommoditySingle.CommoditySingle();
 fsbtn=(Button) findViewById(R.id.fsbtn);
 ccontext=(EditText) findViewById(R.id.ccontextedt);
@@ -92,11 +96,6 @@ fsbtn.setOnClickListener(new OnClickListener() {
 							e.printStackTrace();
 						}
 					}}.start();
-			 
-			 
-			 
-			 
-			 
 			//StreamTools.getByHttpConnection(title,comdate,date,context,name);
 		} catch (Exception e) {
 			// TODO 自动生成的 catch 块

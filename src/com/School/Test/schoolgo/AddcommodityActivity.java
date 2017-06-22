@@ -7,6 +7,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.lang.annotation.Annotation;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
@@ -33,6 +34,7 @@ import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 import android.provider.MediaStore;
+import android.test.UiThreadTest;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -171,7 +173,7 @@ case R.id.checkfl:
      builder.show();
      break;
 case R.id.fbbtn:
-	
+	Toast.makeText(AddcommodityActivity.this, "开始上传...", 1).show();
 	uploadThreadTest2();
 	break;
 	default:
@@ -245,11 +247,8 @@ public void uploadThreadTest2() {
 
             try {
             	PostDate();
-            	//发送数据
-            	//Map<String, String>map=new HashMap<String, String>();
-            	//map.put("name","sun");
-            	//SocketHttpRequester.post(StreamTools.ip+"/SchoolGoServer/UploadHandleServlet2", map, ffs);
-            } catch (Exception e) {
+            	
+  } catch (Exception e) {
                 e.printStackTrace();
             }
         }
@@ -260,26 +259,24 @@ public void uploadThreadTest2() {
 
 
 
-
-
-/*
- * 实现多文件上传
- */
-public void uploadThreadTest() {
-    new Thread(new Runnable() {
-        @Override
-        public void run() {
-
-            try {
-                //upload();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-
-    }).start();
-
-}
+@SuppressLint("HandlerLeak")
+private Handler handler = new Handler()
+{
+	@Override
+	public void handleMessage(android.os.Message msg)
+	{
+		switch (msg.what)
+		{
+		case 0:
+			StreamTools.ShowInfo(AddcommodityActivity.this,"发布完成！");//提示登录成！
+			finish();
+			//去主界面
+			break;
+		default:
+			break;
+		}
+	};
+};
 
 
 public static byte[] Bitmap2Bytes(Bitmap bm){    
@@ -365,13 +362,13 @@ public void PostDate(){
 	    new StringPart("money",money),
 	    new StringPart("fl",fl2)
 	     };
-	   Log.e("error",file[1].toString());
 	    filePost.setRequestEntity(new MultipartRequestEntity(parts,filePost.getParams()));
 	    HttpClient client = new HttpClient();
 	    client.getHttpConnectionManager().getParams().setConnectionTimeout(5000);
 	    int status = client.executeMethod(filePost);
 	    if (status == HttpStatus.SC_OK)
 	    {
+	    	handler.sendMessage(StreamTools.getMsg(0, "失败"));
 	     System.out.println("上传成功");
 	    }
 	    else

@@ -13,6 +13,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
+import com.jeremyfeinstein.slidingmenu.lib.app.SlidingActivity;
 
 import android.R.integer;
 import android.annotation.SuppressLint;
@@ -34,48 +35,41 @@ import com.School.Test.tools.CommoditySingle;
 import com.School.Test.tools.LazyAdapter;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-public class Exhibition extends Activity {
+import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
+public class Exhibition extends Activity    {
+	private SlidingMenu mSlidingMenu;  
 	private ImageButton addcommoditybtn;
 	    private ListView listView=null; 
 	   private CommoditySingle comm;
-	   SlidingMenu menu;
+	   //SlidingMenu menu;
 	   private ImageButton opensd;
 	private static List<Commodity> commoditys=new ArrayList<Commodity>() ;
 @SuppressLint("NewApi")
 @Override
-protected void onCreate(Bundle savedInstanceState) {
+public void onCreate(Bundle savedInstanceState) {
 	// TODO 自动生成的方法存根
 	super.onCreate(savedInstanceState);
 	setContentView(R.layout.exhibition);
 	ActionBar actionBar=getActionBar();
     actionBar.hide();
-   // menu = new SlidingMenu(this);
-    //menu.setMode(SlidingMenu.LEFT);
-    // 设置触摸屏幕的模式
-    //menu.setTouchModeAbove(SlidingMenu.TOUCHMODE_FULLSCREEN);
-    //menu.setShadowWidthRes(R.dimen.shadow_width);
-    //menu.setShadowDrawable(R.color.colorAccent);
-    //WindowManager wm = (WindowManager)getSystemService(Context.WINDOW_SERVICE);  
-    //Display display = wm.getDefaultDisplay();  
-    // 设置滑动菜单视图的宽度
-   // menu.setBehindOffsetRes(R.dimen.slidingmenu_offset);
-    // 设置渐入渐出效果的值
-   // menu.setFadeDegree(0.35f);
-    /**
-     * SLIDING_WINDOW will include the Title/ActionBar in the content
-     * section of the SlidingMenu, while SLIDING_CONTENT does not.
-     */
-   // menu.attachToActivity(this, SlidingMenu.SLIDING_CONTENT);
-    //为侧滑菜单设置布局
-   // menu.setMenu(R.layout.leftmenu);
-   // opensd=(ImageButton) findViewById(R.id.opensd);
-   // opensd.setOnClickListener(new OnClickListener() {
+    WindowManager wm = (WindowManager)getSystemService(Context.WINDOW_SERVICE);  
+    Display display = wm.getDefaultDisplay();  
+    mSlidingMenu = new SlidingMenu(this);  
+    mSlidingMenu.setMode(SlidingMenu.LEFT);     //设置从左弹出/滑出SlidingMenu  
+    mSlidingMenu.setTouchModeAbove(SlidingMenu.TOUCHMODE_FULLSCREEN);   //设置占满屏幕  
+    mSlidingMenu.attachToActivity(this,SlidingMenu.SLIDING_CONTENT);    //绑定到哪一个Activity对象  
+    mSlidingMenu.setMenu(R.layout.leftmenu);                   //设置弹出的SlidingMenu的布局文件  
+    mSlidingMenu.setBehindOffsetRes(R.dimen.slidingmenu_offset);       //设置SlidingMenu所占的偏移  
+    opensd=(ImageButton) findViewById(R.id.opensd);
+    opensd.setOnClickListener(new OnClickListener() {
 		 
-	//	public void onClick(View v) {
+		public void onClick(View v) {
 			// TODO 自动生成的方法存根
-	///		menu.toggle();
-	//	}
-	//});
+			mSlidingMenu.toggle();
+		}
+	});
+    
+    
     comm=CommoditySingle.CommoditySingle();
     addcommoditybtn=(ImageButton) findViewById(R.id.addcom);
     addcommoditybtn.setOnClickListener(new OnClickListener() {

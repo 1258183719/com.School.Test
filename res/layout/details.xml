@@ -9,13 +9,31 @@
         android:background="#FF7F24"
         android:gravity="center"
         >
-        <TextView 
+         <TextView 
+            android:layout_marginLeft="17dp"
+			android:id="@+id/dback"
+            android:layout_height="wrap_content"
             android:layout_width="wrap_content"
+            android:textColor="#ffffff"
+            android:textSize="17dp"
+            android:text="返回"
+            />
+        <TextView 
+            android:gravity="center"
+            android:layout_weight="1"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:textColor="#ffffff"
             android:textSize="23dp"
             android:text="宝贝详情"
             
+            />
+        <TextView 
+            android:layout_marginRight="17dp"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:textColor="#D32626"
+            android:textSize="17dp"
             />
     </LinearLayout>
 
@@ -178,6 +196,7 @@
         android:text="留言"
         />
     <Button 
+        android:id="@+id/wantbtn"
          android:textColor="#ffffff"
         android:background="#fd5b0b"
         android:layout_weight="1"
