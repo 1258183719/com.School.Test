@@ -1,5 +1,7 @@
 package com.School.Test.schoolgo;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -19,6 +21,8 @@ import android.R.integer;
 import android.annotation.SuppressLint;
 import android.app.ActionBar;
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.AlertDialog.Builder;
 import android.content.Context;
 import android.view.Display;
 import android.view.View.OnClickListener;
@@ -26,7 +30,9 @@ import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.School.Test.HttpUtil.StreamTools;
@@ -39,8 +45,10 @@ import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
 public class Exhibition extends Activity    {
 	private SlidingMenu mSlidingMenu;  
 	private ImageButton addcommoditybtn;
+	private LinearLayout mynews,setll;
 	    private ListView listView=null; 
 	   private CommoditySingle comm;
+	   private TextView gwcbtn,myfbbtn,usernametv;
 	   //SlidingMenu menu;
 	   private ImageButton opensd;
 	private static List<Commodity> commoditys=new ArrayList<Commodity>() ;
@@ -51,9 +59,7 @@ public void onCreate(Bundle savedInstanceState) {
 	super.onCreate(savedInstanceState);
 	setContentView(R.layout.exhibition);
 	ActionBar actionBar=getActionBar();
-    actionBar.hide();
-    WindowManager wm = (WindowManager)getSystemService(Context.WINDOW_SERVICE);  
-    Display display = wm.getDefaultDisplay();  
+    actionBar.hide(); 
     mSlidingMenu = new SlidingMenu(this);  
     mSlidingMenu.setMode(SlidingMenu.LEFT);     //设置从左弹出/滑出SlidingMenu  
     mSlidingMenu.setTouchModeAbove(SlidingMenu.TOUCHMODE_FULLSCREEN);   //设置占满屏幕  
@@ -61,6 +67,43 @@ public void onCreate(Bundle savedInstanceState) {
     mSlidingMenu.setMenu(R.layout.leftmenu);                   //设置弹出的SlidingMenu的布局文件  
     mSlidingMenu.setBehindOffsetRes(R.dimen.slidingmenu_offset);       //设置SlidingMenu所占的偏移  
     opensd=(ImageButton) findViewById(R.id.opensd);
+    myfbbtn=(TextView) findViewById(R.id.myfbbtn);
+    setll=(LinearLayout) findViewById(R.id.setll);
+    setll.setOnClickListener(new OnClickListener() {
+		
+		@Override
+		public void onClick(View v) {
+			// TODO 自动生成的方法存根
+			Intent i=new Intent(Exhibition.this,SetActivity.class);
+			startActivity(i);
+		}
+	});
+    SharedPreferences sp=getSharedPreferences("data",MODE_PRIVATE);
+    String name=sp.getString("name", "");
+    usernametv=(TextView) findViewById(R.id.usernametv);
+    usernametv.setText(name);
+    mynews=(LinearLayout) findViewById(R.id.mynewstv);
+    mynews.setOnClickListener(new OnClickListener() {
+		
+		@Override
+		public void onClick(View v) {
+			// TODO 自动生成的方法存根
+			Intent i=new Intent(Exhibition.this,NewsActivity.class);
+			startActivity(i);
+		}
+	});
+    myfbbtn.setOnClickListener(new OnClickListener() {
+		
+		@Override
+		public void onClick(View v) {
+			// TODO 自动生成的方法存根
+			Intent i=new Intent(Exhibition.this,MyReleaseActivity.class);
+			startActivity(i);
+		}
+	});
+    
+    
+    
     opensd.setOnClickListener(new OnClickListener() {
 		 
 		public void onClick(View v) {
@@ -68,10 +111,31 @@ public void onCreate(Bundle savedInstanceState) {
 			mSlidingMenu.toggle();
 		}
 	});
-    
-    
+   
+   TextView abouttv=(TextView) findViewById(R.id.abouttv);
+	abouttv.setOnClickListener(new OnClickListener() {
+		
+		@Override
+		public void onClick(View v) {
+			AlertDialog.Builder builder = new Builder(Exhibition.this);
+			builder.setMessage("  	           星火工作室出品！\n\n星火成员名单：\n研发组：孙文斌  蓝冰  廖文飞  罗富强\n设计组：龙雨  龙志洋\n建模组：万子昂\n指导老师：邹努\n\n工作室创立于2017年3月，它是一个集游戏，软件，网站开发于一体的工作室，成员由游戏软件分院学生组成。\n\n联系我们：\nQQ：1258183719\n手机：18720081535\n");
+			builder.show();
+		}
+	});
     comm=CommoditySingle.CommoditySingle();
+    comm.MainActivity=this;
     addcommoditybtn=(ImageButton) findViewById(R.id.addcom);
+    gwcbtn=(TextView) findViewById(R.id.gwcbtn);
+    gwcbtn.setOnClickListener(new OnClickListener() {
+		
+		@Override
+		public void onClick(View v) {
+			// TODO 自动生成的方法存根
+			Intent i=new Intent(Exhibition.this,ShoppingActivity.class);
+			startActivity(i);
+		}
+	});
+    
     addcommoditybtn.setOnClickListener(new OnClickListener() {
 		
 		@Override

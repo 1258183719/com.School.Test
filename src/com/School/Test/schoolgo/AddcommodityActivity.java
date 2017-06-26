@@ -55,7 +55,6 @@ import org.apache.commons.httpclient.methods.multipart.StringPart;
 
 public class AddcommodityActivity extends Activity implements OnClickListener{
 	String imagePath1,imagePath2,imagePath3;
-	
 	Bitmap bm;
 	private FormFile[]formfiles=new FormFile[4];
 	private ArrayList<FormFile>ffs=new ArrayList<FormFile>();

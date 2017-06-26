@@ -1,8 +1,11 @@
 package com.School.Test.tools;
 
+import android.app.Activity;
+
 public class CommoditySingle {
 	private static CommoditySingle comm;	//自己的对象
 	private static Commodity commodity;
+	public  static Activity MainActivity;
 private CommoditySingle(){		//私有化构造方法
 	
 }

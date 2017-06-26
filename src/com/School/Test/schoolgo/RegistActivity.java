@@ -21,7 +21,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 public class RegistActivity extends Activity {
-	private EditText userNameedt,numberedt,passwordedt,identyedt;
+	private EditText userNameedt,numberedt,passwordedt;
 	private Button rigistbtn;
 	private TextView back;
 	private final int SHOWINFO = 0;
@@ -38,10 +38,10 @@ public class RegistActivity extends Activity {
 				
 			//	StreamTools.ShowInfo(RegistActivity.this, msg.obj.toString()+"瀹屾�?");//鎻愮ず娉ㄥ唽瀹屾垚锛�?
 				if(msg.obj.equals("true")){
-					StreamTools.ShowInfo(RegistActivity.this, "娉ㄥ唽鎴愬姛锛�");
+					StreamTools.ShowInfo(RegistActivity.this, "注册成功！");
 					// finish();
 				}else {
-					StreamTools.ShowInfo(RegistActivity.this, "瀛﹀彿閲嶅锛�");
+					StreamTools.ShowInfo(RegistActivity.this, "注册失败！");
 				}
 				break;
 			case CHANGEUI:
@@ -61,9 +61,8 @@ protected void onCreate(Bundle savedInstanceState) {
 	ActionBar actionBar=getActionBar();
     actionBar.hide();
     userNameedt=(EditText) findViewById(R.id.ruserNameedt);
-    numberedt=(EditText) findViewById(R.id.rnumberedt);
+    numberedt=(EditText) findViewById(R.id.rqq);
     passwordedt=(EditText) findViewById(R.id.rpasswordedt);
-    identyedt=(EditText) findViewById(R.id.ridentyedt);
     rigistbtn=(Button) findViewById(R.id.registbtn);
     back=(TextView) findViewById(R.id.backbtn);
     
@@ -79,13 +78,11 @@ protected void onCreate(Bundle savedInstanceState) {
     rigistbtn.setOnClickListener(new OnClickListener() {
 		@Override
 		public void onClick(View v) {
-			// TODO 鑷姩鐢熸垚鐨勬柟娉曞瓨鏍�
 		  final String userName=userNameedt.getText().toString();
-		  final String number=numberedt.getText().toString();
+		  final String qq=numberedt.getText().toString();
 		  final String pass=passwordedt.getText().toString();
-		  final String identy=identyedt.getText().toString();
-		  if(userName.length()<2||number.length()<9||pass.length()<6||identy.length()<6){
-			  StreamTools.ShowInfo(RegistActivity.this, "璇峰皢淇℃伅濉啓�?�屾�?");
+		  if(userName.length()<2||qq.length()<9||pass.length()<6){
+			  StreamTools.ShowInfo(RegistActivity.this, "请填写完整信息");
 			  
 		  }else{
 		  new Thread()
@@ -97,12 +94,10 @@ protected void onCreate(Bundle savedInstanceState) {
 					{
 						InputStream is = null;
 					
-					is = StreamTools.getByHttpConnection(userName,number, pass,identy);
+					is = StreamTools.getByHttpConnection(userName,qq, pass);
 					final String res = StreamTools.StreamToString(is);
 					if (res != null)
 					{
-						// 涓嶄娇鐢╤andler鐨勫彟涓�绉嶆柟寮�
-						// 杩欑鏂瑰紡涔熷彲浠ュ皝瑁�
 						runOnUiThread(new Runnable()
 						{
 
@@ -113,25 +108,19 @@ protected void onCreate(Bundle savedInstanceState) {
 							//StreamTools.ShowInfo(RegistActivity.this, res+"瀹屾垚浜�?");
 								if(res.equals("true")){
 									
-									StreamTools.ShowInfo(RegistActivity.this, "娉ㄥ唽鎴愬姛锛�");
+									StreamTools.ShowInfo(RegistActivity.this, "注册成功！");
 									finish();
 								}else {
-									StreamTools.ShowInfo(RegistActivity.this, "瀛﹀彿閲嶅锛�");
-									numberedt.setText("");
+									StreamTools.ShowInfo(RegistActivity.this, "用户名重复！");
+									userNameedt.setText("");
 								}
-							// handler.sendMessage(message);//鍙戦�乵essage淇℃�? 
-							//message.what=SHOWINFO;
 							}
 						});
-					} else
-					{
-
-						handler.sendMessage(StreamTools.getMsg(SHOWINFO, "澶辫�?"));
-					}
+					} 
 					}catch (Exception e)
 					{
 						e.printStackTrace();
-						handler.sendMessage(StreamTools.getMsg(SHOWINFO, "鑾峰彇澶辫触"+e));
+					//handler.sendMessage(StreamTools.getMsg(SHOWINFO, "鑾峰彇澶辫触"+e));
 					}
 				}}.start();
 		  

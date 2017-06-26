@@ -1,17 +1,11 @@
 package com.School.Test.schoolgo;
 
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
-import java.lang.annotation.Annotation;
-import java.net.MalformedURLException;
-import java.net.ProtocolException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import com.School.Test.HttpUtil.StreamTools;
 import com.School.Test.HttpUtil.VolleyLoadPicture;
@@ -24,9 +18,12 @@ import com.alibaba.fastjson.JSONObject;
 import android.annotation.SuppressLint;
 import android.app.ActionBar;
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.AlertDialog.Builder;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Debug;
 import android.test.UiThreadTest;
 import android.util.Log;
 import android.view.View;
@@ -69,6 +66,7 @@ protected void onCreate(Bundle savedInstanceState) {
 	wantbtn=(Button) findViewById(R.id.wantbtn);
 	lybtn=(Button) findViewById(R.id.lybtn);
 	lv=(ListView) findViewById(R.id.dlist);
+	
 	wantbtn.setOnClickListener(new OnClickListener() {
 		
 		@Override
@@ -96,7 +94,7 @@ protected void onCreate(Bundle savedInstanceState) {
 							@Override
 							public void run()
 							{
-								Toast.makeText(DetailsActivity.this,res, 0).show();
+								Toast.makeText(DetailsActivity.this,res+"已通知卖家！", 0).show();
 							}
 						});
 					}

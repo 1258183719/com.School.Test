@@ -18,7 +18,7 @@ import android.widget.Toast;
 public class StreamTools
 {
 	public static Activity activity;
-  public static String ip="http://192.168.43.137:8080";
+  public static String ip="http://192.168.1.100:8080";
 	public static String StreamToString(InputStream is)
 	{
 		try
@@ -41,10 +41,57 @@ public class StreamTools
 			return null;
 		}
 	}
+	
+	//删除物品
+	public static InputStream DelectShopp(final String title, final String date,final String name) throws UnsupportedEncodingException, MalformedURLException, IOException, ProtocolException
+	{
+		StringBuilder tt2=ChangeCode("?title=",title);
+		StringBuilder date2=ChangeCode("&date=",date);
+		StringBuilder name2=ChangeCode("&name=",name);
+		HttpURLConnection conn;
+		String path = ip+"/SchoolGoServer/DelectShoppServlet"+tt2+date2+name2;
+		URL get_url = new URL(path);
+		conn = (HttpURLConnection) get_url.openConnection();
+		conn.setRequestMethod("GET");
+		conn.setConnectTimeout(5000);
+		return conn.getInputStream();
+	}
+	
+	
+	
+	public static InputStream DelectRelease(final String title, final String date) throws UnsupportedEncodingException, MalformedURLException, IOException, ProtocolException
+	{
+		StringBuilder tt2=ChangeCode("?title=",title);
+		StringBuilder date2=ChangeCode("&date=",date);
+		HttpURLConnection conn;
+		String path = ip+"/SchoolGoServer/DelectRelease"+tt2+date2;
+		URL get_url = new URL(path);
+		conn = (HttpURLConnection) get_url.openConnection();
+		conn.setRequestMethod("GET");
+		conn.setConnectTimeout(5000);
+		return conn.getInputStream();
+	}
+	
+	
+	public static InputStream Change(final String temp, final String type,String name) throws UnsupportedEncodingException, MalformedURLException, IOException, ProtocolException
+	{
+		HttpURLConnection conn;
+		StringBuilder temp2=ChangeCode("?temp=",temp);
+		StringBuilder name2=ChangeCode("&name", name);
+		String path = ip+"/SchoolGoServer/ChangeServer" + temp2 + "&type="+type+name2;
+		URL get_url = new URL(path);
+		conn = (HttpURLConnection) get_url.openConnection();
+		conn.setRequestMethod("GET");
+		conn.setConnectTimeout(5000);
+		return conn.getInputStream();
+	}
+	
+	
 	public static InputStream getByHttpConnection(final String username, final String password) throws UnsupportedEncodingException, MalformedURLException, IOException, ProtocolException
 	{
 		HttpURLConnection conn;
-		String path = ip+"/SchoolGoServer/LoginServer" + "?userName=" +username + "&passWord="+password;
+		StringBuilder name=ChangeCode("?userName=",username);
+		String path = ip+"/SchoolGoServer/LoginServer" + name + "&passWord="+password;
 		URL get_url = new URL(path);
 		conn = (HttpURLConnection) get_url.openConnection();
 		conn.setRequestMethod("GET");
@@ -78,6 +125,29 @@ public class StreamTools
 		conn.setConnectTimeout(5000);
 		return conn.getInputStream();
 	}
+	public static InputStream getByHttpJson(String name)throws UnsupportedEncodingException, MalformedURLException, IOException, ProtocolException{
+		HttpURLConnection conn;
+		StringBuilder name2=ChangeCode("?name=",name);
+		String path = ip+"/SchoolGoServer/ShoppingServlet"+name2;
+		URL get_url = new URL(path);
+		conn = (HttpURLConnection) get_url.openConnection();
+		conn.setRequestMethod("GET");
+		conn.setConnectTimeout(5000);
+		return conn.getInputStream();
+	}
+	
+	public static InputStream getMyRelease(String name)throws UnsupportedEncodingException, MalformedURLException, IOException, ProtocolException{
+		HttpURLConnection conn;
+		StringBuilder name2=ChangeCode("?name=",name);
+		String path = ip+"/SchoolGoServer/MyReleaseActivity"+name2;
+		URL get_url = new URL(path);
+		conn = (HttpURLConnection) get_url.openConnection();
+		conn.setRequestMethod("GET");
+		conn.setConnectTimeout(5000);
+		return conn.getInputStream();
+	}
+	
+	
 	
 	public static InputStream getByHttpConnection(String ImagePath) throws UnsupportedEncodingException, MalformedURLException, IOException, ProtocolException
 	{
@@ -134,13 +204,13 @@ public class StreamTools
 	
 	
 	//注册提交数据
-	public static InputStream getByHttpConnection(final String username,final String number, final String password,final String identy) throws UnsupportedEncodingException, MalformedURLException, IOException, ProtocolException
+	public static InputStream getByHttpConnection(final String username,final String qq, final String password) throws UnsupportedEncodingException, MalformedURLException, IOException, ProtocolException
 	{
 		 StringBuilder sb = new StringBuilder();
 		sb.append("userName=")
 		.append(URLEncoder.encode(username,"utf-8"));
 		HttpURLConnection conn;								
-		String path = ip+"/SchoolGoServer/RegistServer?" + sb +"&number="+number+ "&passWord="+password+"&identy="+identy;
+		String path = ip+"/SchoolGoServer/RegistServer?" + sb + "&passWord="+password+"&qq="+qq;
 		URL get_url = new URL(path);
 		System.out.println(path);
 		conn = (HttpURLConnection) get_url.openConnection();

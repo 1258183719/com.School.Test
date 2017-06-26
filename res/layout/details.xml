@@ -29,6 +29,8 @@
             
             />
         <TextView 
+            android:visibility="invisible"
+            android:text="返回"
             android:layout_marginRight="17dp"
             android:layout_height="wrap_content"
             android:layout_width="wrap_content"
@@ -118,6 +120,8 @@
     </LinearLayout>
 </LinearLayout>
 <TextView 
+    android:layout_marginTop="20dp"
+    android:layout_marginBottom="20dp"
     android:id="@+id/dcontext"
     android:layout_marginLeft="20dp"
     android:layout_marginRight="20dp"
@@ -205,12 +209,13 @@
         android:text="我想要"
         />
     <Button 
+        android:id="@+id/lxbtn"
          android:textColor="#ffffff"
         android:background="#ff0000"
         android:layout_weight="1"
         android:layout_width="0dp"
         android:layout_height="50dp"
-        android:text="收藏"
+        android:text="联系卖家"
         />
 </LinearLayout>
 </LinearLayout>
