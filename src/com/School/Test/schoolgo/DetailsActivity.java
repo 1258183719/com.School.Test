@@ -22,6 +22,7 @@ import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Debug;
 import android.test.UiThreadTest;
@@ -43,8 +44,9 @@ public class DetailsActivity extends Activity {
 	private ImageView dimage1,dimage2,dimage3;
 	private ListView lv;
 	ImageLoader imageLoader;
+	private String qq;
 	private List<Commod>list=new ArrayList<Commod>();
-	private Button lybtn,wantbtn;
+	private Button lybtn,wantbtn,lxbtn;
 @SuppressLint({ "ShowToast", "NewApi" })
 @Override
 protected void onCreate(Bundle savedInstanceState) {
@@ -64,6 +66,17 @@ protected void onCreate(Bundle savedInstanceState) {
 	dimage2=(ImageView) findViewById(R.id.dimage2);
 	dimage3=(ImageView) findViewById(R.id.dimage3);
 	wantbtn=(Button) findViewById(R.id.wantbtn);
+	lxbtn=(Button) findViewById(R.id.lxbtn);
+	getData();
+	lxbtn.setOnClickListener(new OnClickListener() {
+		
+		@Override
+		public void onClick(View v) {
+			// TODO 自动生成的方法存根
+			  String url="mqqwpa://im/chat?chat_type=wpa&uin="+qq;
+			    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(url)));
+		}
+	});
 	lybtn=(Button) findViewById(R.id.lybtn);
 	lv=(ListView) findViewById(R.id.dlist);
 	
@@ -306,5 +319,38 @@ public String GetDate(String date){
 }
 public void back(){
 	finish();
+}
+public void getData(){
+	   new Thread()
+		{
+			@Override
+			public void run()
+			{
+				try
+				{
+					InputStream is = null;
+					String name=comm.GetCommodity().getUsername();
+					 
+				is = StreamTools.GetQQ(name);
+				final String res = StreamTools.StreamToString(is);
+				if (res != null)
+				{
+					// 不使用handler的另一种方式
+					// 这种方式也可以封装
+					runOnUiThread(new Runnable()
+					{
+
+						@Override
+						public void run()
+						{
+							qq=res;
+						}
+					});
+				}
+				}catch (Exception e)
+				{
+					e.printStackTrace();
+				}
+			}}.start();
 }
 }

@@ -3,6 +3,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 
@@ -30,6 +31,7 @@ import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -39,10 +41,12 @@ import com.School.Test.HttpUtil.StreamTools;
 import com.School.Test.tools.Commodity;
 import com.School.Test.tools.CommoditySingle;
 import com.School.Test.tools.LazyAdapter;
+import com.School.Test.tools.Want;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
 public class Exhibition extends Activity    {
+	private ImageView transcationiv;
 	private SlidingMenu mSlidingMenu;  
 	private ImageButton addcommoditybtn;
 	private LinearLayout mynews,setll;
@@ -52,6 +56,7 @@ public class Exhibition extends Activity    {
 	   //SlidingMenu menu;
 	   private ImageButton opensd;
 	private static List<Commodity> commoditys=new ArrayList<Commodity>() ;
+	private static List<Want> wantlist=new ArrayList<Want>() ;
 @SuppressLint("NewApi")
 @Override
 public void onCreate(Bundle savedInstanceState) {
@@ -69,6 +74,8 @@ public void onCreate(Bundle savedInstanceState) {
     opensd=(ImageButton) findViewById(R.id.opensd);
     myfbbtn=(TextView) findViewById(R.id.myfbbtn);
     setll=(LinearLayout) findViewById(R.id.setll);
+    transcationiv=(ImageView) findViewById(R.id.transcationiv);
+    GetTransation();
     setll.setOnClickListener(new OnClickListener() {
 		
 		@Override
@@ -251,6 +258,70 @@ public String GetDate(String date){
 	  return date;
 }
 
+
+public void GetTransation(){	
+		new Thread()
+		{
+			@Override
+			public void run()
+			{
+				try
+				{
+					InputStream is = null;
+					SharedPreferences sp=getSharedPreferences("data",MODE_PRIVATE);
+				    String name=sp.getString("name", "");
+				is = StreamTools.getTranscation(name);
+				final String res = StreamTools.StreamToString(is);
+				if (res != null)
+				{
+					// 不使用handler的另一种方式
+					// 这种方式也可以封装
+					runOnUiThread(new Runnable()
+					{
+
+						@Override
+						public void run()
+						{
+						//有数据就去解析
+							if(res!=null){
+						parseJson2(res);
+							}
+						
+						}
+					});
+				}
+				}catch (Exception e)
+				{
+					e.printStackTrace();
+					}
+			}}.start();
+	}  	
+private void parseJson2(String jsondata){
+	 JSONObject object = JSON.parseObject(jsondata);  
+    Object jsonArray = object.get("wants");
+    List<Map<String, Object>> list=new ArrayList<Map<String,Object>>(); 
+   List<Want> list2 = JSON.parseArray(jsonArray+"", Want.class);
+   for (Want want : list2) {
+   	Want w=new Want(want.getTitle(), want.getComdate(), want.getName(), want.getFbz(), want.getDate());	
+   	wantlist.add(w);
+   }
+   if(wantlist.size()>0){
+	   handler.sendMessage(StreamTools.getMsg(1, "获取失败"));
+   }
+}
+
+
+@SuppressLint("HandlerLeak")
+private Handler handler = new Handler()
+{
+	@Override
+	public void handleMessage(android.os.Message msg)
+	{
+		transcationiv.setImageResource(R.drawable.xinxilogo2);
+			StreamTools.ShowInfo(Exhibition.this, msg.obj.toString());//提示登录成！
+			
+	};
+};
 
 }
  

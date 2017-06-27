@@ -13,12 +13,13 @@ import java.net.URLEncoder;
 import android.app.Activity;
 import android.content.Context;
 import android.os.Message;
+import android.util.Log;
 import android.widget.Toast;
 
 public class StreamTools
 {
 	public static Activity activity;
-  public static String ip="http://192.168.1.100:8080";
+  public static String ip="http://192.168.43.137:8080";
 	public static String StreamToString(InputStream is)
 	{
 		try
@@ -72,13 +73,26 @@ public class StreamTools
 		return conn.getInputStream();
 	}
 	
+	public static InputStream GetQQ(String name) throws UnsupportedEncodingException, MalformedURLException, IOException, ProtocolException
+	{
+		HttpURLConnection conn;
+		StringBuilder name2=ChangeCode("?name=", name);
+		Log.e("´íÎó", name2.toString());
+		String path = ip+"/SchoolGoServer/GetUserDataServer"+name2;
+		URL get_url = new URL(path);
+		conn = (HttpURLConnection) get_url.openConnection();
+		conn.setRequestMethod("GET");
+		conn.setConnectTimeout(5000);
+		return conn.getInputStream();
+	}
+	
 	
 	public static InputStream Change(final String temp, final String type,String name) throws UnsupportedEncodingException, MalformedURLException, IOException, ProtocolException
 	{
 		HttpURLConnection conn;
-		StringBuilder temp2=ChangeCode("?temp=",temp);
-		StringBuilder name2=ChangeCode("&name", name);
-		String path = ip+"/SchoolGoServer/ChangeServer" + temp2 + "&type="+type+name2;
+		StringBuilder temp2=ChangeCode("&temp=",temp);
+		StringBuilder name2=ChangeCode("?name=", name);
+		String path = ip+"/SchoolGoServer/ChangeServer"+name2 + temp2 + "&type="+type+name2;
 		URL get_url = new URL(path);
 		conn = (HttpURLConnection) get_url.openConnection();
 		conn.setRequestMethod("GET");
@@ -147,7 +161,17 @@ public class StreamTools
 		return conn.getInputStream();
 	}
 	
-	
+	public static InputStream getTranscation(String name) throws UnsupportedEncodingException, MalformedURLException, IOException, ProtocolException
+	{
+		HttpURLConnection conn;
+		StringBuilder name2=ChangeCode("?name=",name);
+		String path = ip+"/SchoolGoServer/TransactionServlet"+name2 ;
+		URL get_url = new URL(path);
+		conn = (HttpURLConnection) get_url.openConnection();
+		conn.setRequestMethod("GET");
+		conn.setConnectTimeout(5000);
+		return conn.getInputStream();
+	}
 	
 	public static InputStream getByHttpConnection(String ImagePath) throws UnsupportedEncodingException, MalformedURLException, IOException, ProtocolException
 	{
