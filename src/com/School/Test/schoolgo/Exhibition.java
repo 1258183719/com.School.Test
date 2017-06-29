@@ -1,13 +1,22 @@
 package com.School.Test.schoolgo;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.BitmapFactory.Options;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 
+import java.io.File;
 import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
@@ -30,6 +39,7 @@ import android.view.View.OnClickListener;
 import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -38,24 +48,32 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.School.Test.HttpUtil.StreamTools;
+import com.School.Test.ImageUtil.RoundImageView;
 import com.School.Test.tools.Commodity;
 import com.School.Test.tools.CommoditySingle;
+import com.School.Test.tools.ImageLoader;
 import com.School.Test.tools.LazyAdapter;
+import com.School.Test.tools.TransActionSingle;
 import com.School.Test.tools.Want;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
 public class Exhibition extends Activity    {
+	private RoundImageView headiv;
 	private ImageView transcationiv;
 	private SlidingMenu mSlidingMenu;  
 	private ImageButton addcommoditybtn;
 	private LinearLayout mynews,setll;
 	    private ListView listView=null; 
+	    private EditText ssedt;
 	   private CommoditySingle comm;
 	   private TextView gwcbtn,myfbbtn,usernametv;
+	   private Bitmap bm2;
+	   private TransActionSingle tas;
 	   //SlidingMenu menu;
 	   private ImageButton opensd;
 	private static List<Commodity> commoditys=new ArrayList<Commodity>() ;
+	
 	private static List<Want> wantlist=new ArrayList<Want>() ;
 @SuppressLint("NewApi")
 @Override
@@ -65,6 +83,9 @@ public void onCreate(Bundle savedInstanceState) {
 	setContentView(R.layout.exhibition);
 	ActionBar actionBar=getActionBar();
     actionBar.hide(); 
+    tas=TransActionSingle.GetSingle();
+    ssedt=(EditText) findViewById(R.id.ssedt);
+    ssedt.addTextChangedListener(textChange);
     mSlidingMenu = new SlidingMenu(this);  
     mSlidingMenu.setMode(SlidingMenu.LEFT);     //设置从左弹出/滑出SlidingMenu  
     mSlidingMenu.setTouchModeAbove(SlidingMenu.TOUCHMODE_FULLSCREEN);   //设置占满屏幕  
@@ -76,6 +97,7 @@ public void onCreate(Bundle savedInstanceState) {
     setll=(LinearLayout) findViewById(R.id.setll);
     transcationiv=(ImageView) findViewById(R.id.transcationiv);
     GetTransation();
+    ShowHead();
     setll.setOnClickListener(new OnClickListener() {
 		
 		@Override
@@ -164,14 +186,22 @@ public void onCreate(Bundle savedInstanceState) {
 					startActivity(i);
 				}
 			});
-     
+   			getData();
 }
 @Override
 protected void onResume() {
 	// TODO 自动生成的方法存根
 	super.onResume();
-	commoditys=new ArrayList<Commodity>();
-	getData();//数据存
+	if(comm.IsChange){
+		commoditys=new ArrayList<Commodity>();
+		getData();//数据存
+		comm.IsChange=false;
+		
+	}
+	
+	if(comm.head!=null&&comm.head!=bm2){
+		headiv.setImageBitmap(comm.head);
+	}
 }
 public void getData(){
 	
@@ -211,6 +241,8 @@ public void getData(){
 		}}.start();
 }  			
 private void parseJson(String jsondata){
+	
+	
 	 JSONObject object = JSON.parseObject(jsondata);  
      Object jsonArray = object.get("commoditys");
      List<Map<String, Object>> list=new ArrayList<Map<String,Object>>(); 
@@ -226,12 +258,12 @@ private void parseJson(String jsondata){
          map.put("path1",commodity.getImagepath1());  
          map.put("path2",commodity.getImagepath2());  
          map.put("path3",commodity.getImagepath3());  
-         
+         map.put("head",commodity.getHeadpath());  
          list.add(map);  
     	 commoditys.add(commodity);
 	}
     Collections.reverse(list);
-    Collections.reverse(commoditys);
+    //Collections.reverse(commoditys);
     listView.setAdapter(new LazyAdapter(this,list));  
 }
 public String GetDate(String date){
@@ -302,12 +334,15 @@ private void parseJson2(String jsondata){
     List<Map<String, Object>> list=new ArrayList<Map<String,Object>>(); 
    List<Want> list2 = JSON.parseArray(jsonArray+"", Want.class);
    for (Want want : list2) {
-   	Want w=new Want(want.getTitle(), want.getComdate(), want.getName(), want.getFbz(), want.getDate());	
+   	Want w=new Want(want.getTitle(), want.getComdate(), want.getName(), want.getFbz(), want.getDate(),want.getQq());	
    	wantlist.add(w);
    }
    if(wantlist.size()>0){
-	   handler.sendMessage(StreamTools.getMsg(1, "获取失败"));
+	   handler.sendMessage(StreamTools.getMsg(1, ""));
    }
+   Collections.reverse(wantlist);
+   tas.wants=wantlist;
+   
 }
 
 
@@ -318,10 +353,143 @@ private Handler handler = new Handler()
 	public void handleMessage(android.os.Message msg)
 	{
 		transcationiv.setImageResource(R.drawable.xinxilogo2);
-			StreamTools.ShowInfo(Exhibition.this, msg.obj.toString());//提示登录成！
 			
 	};
 };
+@SuppressLint("HandlerLeak")
+private Handler handler2 = new Handler()
+{
+	@Override
+	public void handleMessage(android.os.Message msg)
+	{
+		headiv=(RoundImageView) findViewById(R.id.headiv);
+		File appDir = new File(Environment.getExternalStorageDirectory(),"imagedate");
+	    if (!appDir.exists()) {
+	        appDir.mkdir();
+	    }
+	    File file = new File(appDir, "head.jpg");
+	    if(!file.exists()){
+	    	Toast.makeText(Exhibition.this, "有头像", 0).show();
+	    }
+		ImageLoader	imageLoader=new ImageLoader(Exhibition.this.getApplicationContext());
+       imageLoader.DisplayImage(StreamTools.ip+"/SchoolGoServer/DownLoadImageServlet"+msg.obj.toString(),headiv,false);;
+			
+	};
+};
+public void ShowHead(){
+	headiv=(RoundImageView) findViewById(R.id.headiv);
+	File appDir = new File(Environment.getExternalStorageDirectory(),"imagedate");
+    if (!appDir.exists()) {
+        appDir.mkdir();
+    }
+    File file = new File(appDir, "head.jpg");
+    if(file.exists()){
+    	BitmapFactory.Options options = new BitmapFactory.Options();   
+    	Bitmap img2=BitmapFactory.decodeFile(file.toString(),getBitmapOption(AddcommodityActivity.calculatInSampleSize(options,headiv)));
+    headiv.setImageBitmap(img2);
+    bm2=img2;
+    comm.head=bm2;
+    return;
+    }
+	new Thread()
+	{
+		@Override
+		public void run()
+		{
+			try
+			{
+				InputStream is = null;
+				  SharedPreferences sp=getSharedPreferences("data",MODE_PRIVATE);
+				    String name=sp.getString("name", "");
+			is = StreamTools.getHead(name);
+			final String res = StreamTools.StreamToString(is);
+			if (res != null)
+			{
+				// 不使用handler的另一种方式
+				// 这种方式也可以封装
+				runOnUiThread(new Runnable()
+				{
 
+					@Override
+					public void run()
+					{
+						
+					if(res.length()>7){
+			        	StringBuilder   sb = new StringBuilder();
+			        		try {
+			        			sb.append("?path=")
+			        			.append(URLEncoder.encode(res,"utf-8"));
+			        		} catch (UnsupportedEncodingException e) {
+			        			// TODO 自动生成的 catch 块
+			        			e.printStackTrace();
+			        		}
+			        	    
+			        	      
+			                  handler2.sendMessage(StreamTools.getMsg(1, sb));
+					}
+					
+						}
+				});
+			}
+			}catch (Exception e)
+			{
+				e.printStackTrace();
+			}
+		}}.start();
+}
+private Options getBitmapOption(int inSampleSize){
+    System.gc();
+    BitmapFactory.Options options = new BitmapFactory.Options();
+    options.inPurgeable = true;
+    options.inSampleSize = inSampleSize;
+    return options;
+}
+TextWatcher textChange = new TextWatcher(){  
+    
+    @Override  
+    public void afterTextChanged(Editable s) {  
+    	final List<Commodity> commoditys2=new ArrayList<Commodity>() ;
+     for (Commodity commodity : commoditys) {
+    	 if(commodity.getTitle().indexOf(ssedt.getText().toString())!=-1){
+    		 commoditys2.add(commodity);
+    	 }
+	}
+     List<Map<String, Object>> list=new ArrayList<Map<String,Object>>(); 
+     for (Commodity commodity : commoditys2) {
+    	 Map<String, Object> map=new HashMap<String, Object>();
+    	 map.put("title", commodity.getTitle());  
+         map.put("name",commodity.getUsername());  
+         String date=GetDate(commodity.getDate().toString());
+         map.put("date",date);  //时间
+         map.put("yijia",commodity.getYijia());  
+         map.put("money",commodity.getMoney());  
+         map.put("path1",commodity.getImagepath1());  
+         map.put("path2",commodity.getImagepath2());  
+         map.put("path3",commodity.getImagepath3());  
+         map.put("head",commodity.getHeadpath());  
+         list.add(map);  
+	}
+     
+     listView.setAdapter(new LazyAdapter(Exhibition.this,list)); 
+     listView.setOnItemClickListener(new OnItemClickListener() {
+
+			@Override
+			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+				// TODO 自动生成的方法存根
+				comm.SetCommodity(commoditys2.get(position));
+				Intent i=new Intent(Exhibition.this,DetailsActivity.class);
+				startActivity(i);
+			}
+		});
+    }  
+
+    @Override  
+    public void beforeTextChanged(CharSequence s, int start, int count,  
+            int after) {  
+    }  
+    @Override  
+    public void onTextChanged(CharSequence s, int start, int before,  
+            int count) {  
+    }};  
 }
  

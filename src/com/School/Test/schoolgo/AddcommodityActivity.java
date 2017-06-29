@@ -1,23 +1,21 @@
 package com.School.Test.schoolgo;
 
-import java.io.BufferedOutputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
-import java.lang.annotation.Annotation;
 import java.net.URLEncoder;
-import java.util.ArrayList;
-import java.util.List;
-
-import com.School.Test.HttpUtil.FormFile;
 import com.School.Test.HttpUtil.StreamTools;
+import com.School.Test.ImageUtil.RoundImageView;
+import com.School.Test.tools.CommoditySingle;
+
 import android.annotation.SuppressLint;
 import android.app.ActionBar;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -54,10 +52,10 @@ import org.apache.commons.httpclient.methods.multipart.Part;
 import org.apache.commons.httpclient.methods.multipart.StringPart;
 
 public class AddcommodityActivity extends Activity implements OnClickListener{
+	  private ProgressDialog pdialog;  
 	String imagePath1,imagePath2,imagePath3;
-	Bitmap bm;
-	private FormFile[]formfiles=new FormFile[4];
-	private ArrayList<FormFile>ffs=new ArrayList<FormFile>();
+	private CommoditySingle comm;
+	//Bitmap bm;
 	private File []file=new File[3];
 	private int checked=0; //默认是第一张图
 	private Button fbbtn;
@@ -70,7 +68,7 @@ public class AddcommodityActivity extends Activity implements OnClickListener{
 	private int drawable=R.drawable.huangseanniu;
 	private String yijia="一口价";
  private int i=0;
- byte[] b;
+ //byte[] b;
 @SuppressLint("NewApi")
 @Override
 protected void onCreate(Bundle savedInstanceState) {
@@ -79,7 +77,10 @@ protected void onCreate(Bundle savedInstanceState) {
 	setContentView(R.layout.addcommodityactivity);
 	ActionBar actionBar=getActionBar();
     actionBar.hide();
+    comm=CommoditySingle.CommoditySingle();
+   
     Load();
+    
     
 }
 //加载资源
@@ -172,7 +173,7 @@ case R.id.checkfl:
      builder.show();
      break;
 case R.id.fbbtn:
-	Toast.makeText(AddcommodityActivity.this, "开始上传...", 1).show();
+	pdialog = ProgressDialog.show(AddcommodityActivity.this, "正在上传...", "图片山传中"); 
 	uploadThreadTest2();
 	break;
 	default:
@@ -180,18 +181,6 @@ case R.id.fbbtn:
 	}
 	}
 
-//压缩图片
-private void setImageBitmap(ImageView photoImageView,String photoPath){
-	 BitmapFactory.Options options=new BitmapFactory.Options();
-     options.inSampleSize=1;//直接设置它的压缩率，表示1/2
-     Bitmap b=null;
-     try {
-         b=BitmapFactory.decodeFile(photoPath, options);
-     } catch (Exception e) {
-         e.printStackTrace();
-     }
- photoImageView.setImageBitmap(b);
-}
 protected void onActivityResult(int requestCode, int resultCode, Intent data) {
     super.onActivityResult(requestCode, resultCode, data);
 
@@ -210,25 +199,24 @@ protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         BitmapFactory.Options options = new BitmapFactory.Options();  
         Bitmap img = BitmapFactory.decodeFile(picturePath, options); 
       Bitmap nowbitmap=imageZoom(img);  //现在的bitmap
-        bm=BitmapFactory.decodeFile(picturePath,getBitmapOption(1));
-    	b= Bitmap2Bytes(bm);					
+      Bitmap img2=BitmapFactory.decodeFile(picturePath,getBitmapOption(calculatInSampleSize(options,image1)));
         switch (checked) {
 		case 0:
 			file[0]=new File(picturePath);
-			image1.setImageBitmap(nowbitmap);
+			image1.setImageBitmap(img2);
 			imagePath1=saveImage("image1.jpg",nowbitmap);     //保存真正要上传的图
 			break;
 case 1:
 	file[1]=new File(picturePath);
 	imagePath2=saveImage("image2.jpg",nowbitmap);     //保存真正要上传的图
-	image2.setImageBitmap(nowbitmap);
+	image2.setImageBitmap(img2);
  	//setImageBitmap(image2,picturePath);//设置压缩并显示图片
 			break;
 case 2:
 	file[2]=new File(picturePath);
 	imagePath3=saveImage("image3.jpg",nowbitmap);     //保存真正要上传的图
 	//formfiles[3]=new FormFile("image4.jpg", b, "image4",null);
-	image3.setImageBitmap(nowbitmap);
+	image3.setImageBitmap(img2);
 	break;
 
 		default:
@@ -267,6 +255,7 @@ private Handler handler = new Handler()
 		switch (msg.what)
 		{
 		case 0:
+			pdialog.dismiss();  
 			StreamTools.ShowInfo(AddcommodityActivity.this,"发布完成！");//提示登录成！
 			finish();
 			//去主界面
@@ -361,10 +350,12 @@ public void PostDate(){
 	    new StringPart("money",money),
 	    new StringPart("fl",fl2)
 	     };
+	   comm.IsChange=true;
 	    filePost.setRequestEntity(new MultipartRequestEntity(parts,filePost.getParams()));
 	    HttpClient client = new HttpClient();
 	    client.getHttpConnectionManager().getParams().setConnectionTimeout(5000);
 	    int status = client.executeMethod(filePost);
+	   
 	    if (status == HttpStatus.SC_OK)
 	    {
 	    	handler.sendMessage(StreamTools.getMsg(0, "失败"));
@@ -399,6 +390,7 @@ return sb;
 }
 
 public  String saveImage(String Name,Bitmap bmp) {
+	
 	File file;
     File appDir = new File(Environment.getExternalStorageDirectory(),"imagedate");
     if (!appDir.exists()) {
@@ -406,6 +398,7 @@ public  String saveImage(String Name,Bitmap bmp) {
     }
     String fileName = Name;
      file = new File(appDir, fileName);
+     Toast.makeText(AddcommodityActivity.this, file.toString(), 0).show();
     try {
         FileOutputStream fos = new FileOutputStream(file);
         bmp.compress(CompressFormat.PNG, 100, fos);
@@ -427,5 +420,37 @@ public static String getSDPath(){
 	  }
 	  return sdDir.toString();   
 	 }
+public  static int calculatInSampleSize(BitmapFactory.Options options, ImageView imageView) {  
+    //获取位图的原宽高  
+    final int w = options.outWidth;  
+    final int h = options.outHeight;  
+ 
+    if (imageView!=null){  
+        //获取控件的宽高  
+        final int reqWidth = imageView.getWidth();  
+        final int reqHeight = imageView.getHeight();  
+ 
+        //默认为一(就是不压缩)  
+        int inSampleSize = 1;  
+        //如果原图的宽高比需要的图片宽高大  
+        if (w > reqWidth || h > reqHeight) {  
+            if (w > h) {  
+                inSampleSize = Math.round((float) h / (float) reqHeight);  
+            } else {  
+                inSampleSize = Math.round((float) w / (float) reqWidth);  
+            }  
+        }  
+ 
+        System.out.println("压缩比为:" + inSampleSize);  
+ 
+        return inSampleSize;  
+ 
+    }else {  
+        return 1;  
+    }  
+}  
+public void addclose(View v){
+	finish();
+}
 }
 

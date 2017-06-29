@@ -19,7 +19,7 @@ import android.widget.Toast;
 public class StreamTools
 {
 	public static Activity activity;
-  public static String ip="http://192.168.43.137:8080";
+  public static String ip="http://47.93.185.59:8081";
 	public static String StreamToString(InputStream is)
 	{
 		try
@@ -92,7 +92,10 @@ public class StreamTools
 		HttpURLConnection conn;
 		StringBuilder temp2=ChangeCode("&temp=",temp);
 		StringBuilder name2=ChangeCode("?name=", name);
-		String path = ip+"/SchoolGoServer/ChangeServer"+name2 + temp2 + "&type="+type+name2;
+		StringBuilder type2=ChangeCode("&type=", type);
+		
+		String path = ip+"/SchoolGoServer/ChangeServer"+name2 + temp2 +type2;
+		Log.e("error",path);
 		URL get_url = new URL(path);
 		conn = (HttpURLConnection) get_url.openConnection();
 		conn.setRequestMethod("GET");
@@ -172,7 +175,16 @@ public class StreamTools
 		conn.setConnectTimeout(5000);
 		return conn.getInputStream();
 	}
-	
+	public static InputStream getHead(String name) throws IOException{
+		HttpURLConnection conn;
+		StringBuilder name2=ChangeCode("?name=",name);
+		String path = ip+"/SchoolGoServer/GetHeadServer"+name2 ;
+		URL get_url = new URL(path);
+		conn = (HttpURLConnection) get_url.openConnection();
+		conn.setRequestMethod("GET");
+		conn.setConnectTimeout(5000);
+		return conn.getInputStream();
+	}
 	public static InputStream getByHttpConnection(String ImagePath) throws UnsupportedEncodingException, MalformedURLException, IOException, ProtocolException
 	{
 		HttpURLConnection conn;
@@ -187,7 +199,7 @@ public class StreamTools
 	
 	
 	//提交下单申请
-		public static InputStream getByHttpConnection2(final String title,final String comdate, final String name,String fbz) throws UnsupportedEncodingException, MalformedURLException, IOException, ProtocolException
+		public static InputStream getByHttpConnection2(final String title,final String comdate, final String name,String fbz,String qq) throws UnsupportedEncodingException, MalformedURLException, IOException, ProtocolException
 		{
 			 StringBuilder title2 = new StringBuilder();
 			 title2.append("title=")
@@ -201,11 +213,11 @@ public class StreamTools
 			 StringBuilder fbz2 = new StringBuilder();
 			 fbz2.append("&fbz=")
 				.append(URLEncoder.encode(fbz,"utf-8"));
-			 
-			 
-			 
+			 StringBuilder qq2 = new StringBuilder();
+			 fbz2.append("&qq=")
+				.append(URLEncoder.encode(qq,"utf-8"));
 			HttpURLConnection conn;								
-			String path = ip+"/SchoolGoServer/WantServlet?" +title2+comdate2+name2+fbz2;
+			String path = ip+"/SchoolGoServer/WantServlet?" +title2+comdate2+name2+fbz2+qq2;
 			URL get_url = new URL(path);
 			System.out.println(path);
 			conn = (HttpURLConnection) get_url.openConnection();

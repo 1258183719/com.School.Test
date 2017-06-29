@@ -10,16 +10,29 @@
         android:background="#FF7F24"
         android:gravity="center"
         >
-
+		<ImageView 
+		    android:onClick="addclose"
+		    android:layout_marginLeft="10dp"
+		    android:layout_width="10dp"
+		    android:layout_height="20dp"
+		    android:src="@drawable/back3"
+		    />
         
-        <TextView 
-            android:layout_width="wrap_content"
+        <TextView
+            android:gravity="center"
+            android:layout_weight="1"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:textColor="#ffffff"
             android:textSize="23dp"
             android:text="发布"
             
             />
+        <ImageView 
+		    android:layout_marginLeft="10dp"
+		    android:layout_width="20dp"
+		    android:layout_height="30dp"
+		    />
     </LinearLayout>
 <LinearLayout 
     android:layout_marginTop="20dp"
@@ -90,28 +103,31 @@
         android:layout_height="wrap_content"
         >
         <ImageView 
+            android:scaleType="fitXY"
             android:id="@+id/image1"
             android:layout_marginLeft="10dp"
             android:layout_marginBottom="4dp"
             android:layout_width="60dp"
             android:layout_height="60dp"
-            android:background="#B0B0B0"
+            android:src="#B0B0B0"
             />
         <ImageView 
+            android:scaleType="fitXY"
              android:id="@+id/image2"
             android:layout_marginLeft="5dp"
             android:layout_marginBottom="4dp"
             android:layout_width="60dp"
             android:layout_height="60dp"
-            android:background="#B0B0B0"
+            android:src="#B0B0B0"
             />
         <ImageView 
+            android:scaleType="fitXY"
              android:id="@+id/image3"
             android:layout_marginLeft="5dp"
             android:layout_marginBottom="4dp"
             android:layout_width="60dp"
             android:layout_height="60dp"
-            android:background="#B0B0B0"
+            android:src="#B0B0B0"
             />
     </LinearLayout>
 </LinearLayout>

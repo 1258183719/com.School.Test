@@ -6,7 +6,7 @@ import java.net.URL;
 
 import android.app.Activity;
 import android.widget.Toast;
-
+ 
 public class HttpUtils {
 	//static String ip="http://192.168.1.100:8080";
     public static String submitPostData(String number,String pass) {

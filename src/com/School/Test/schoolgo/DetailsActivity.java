@@ -87,6 +87,7 @@ protected void onCreate(Bundle savedInstanceState) {
 			// TODO 上传购买信息
 			SharedPreferences sp=getSharedPreferences("data",MODE_PRIVATE);
 		    final String name=sp.getString("name", "");
+		    final String qq2=sp.getString("qq", "");
 			new Thread()
 			{
 				@Override
@@ -95,8 +96,7 @@ protected void onCreate(Bundle savedInstanceState) {
 					try
 					{
 						InputStream is = null;
-					
-					is = StreamTools.getByHttpConnection2(comm.GetCommodity().getTitle(),comm.GetCommodity().getDate(),name,comm.GetCommodity().getUsername());    
+					is = StreamTools.getByHttpConnection2(comm.GetCommodity().getTitle(),comm.GetCommodity().getDate(),name,comm.GetCommodity().getUsername(),qq2);    
 					final String res = StreamTools.StreamToString(is);
 					if (res != null)
 					{
@@ -352,5 +352,8 @@ public void getData(){
 					e.printStackTrace();
 				}
 			}}.start();
+}
+public void dcolose(View v){
+	finish();
 }
 }

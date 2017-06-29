@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+    <LinearLayout 
+        android:layout_height="50dp"
+        android:layout_width="match_parent"
+        android:background="#ed1b25"
+        android:gravity="center"
+        >
+         <TextView 
+            android:layout_marginLeft="17dp"
+			android:onClick="nclose"
+            android:layout_height="20dp"
+            android:layout_width="10dp"
+            android:textColor="#ffffff"
+            android:textSize="17dp"
+			android:background="@drawable/back3"
+            />
+        <TextView 
+            android:gravity="center"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:textColor="#ffffff"
+            android:textSize="23dp"
+            android:text="我的消息"
+            
+            />
+        <TextView 
+            android:visibility="invisible"
+            android:text="返回"
+            android:layout_marginRight="17dp"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:textColor="#D32626"
+            android:textSize="17dp"
+            />
+    </LinearLayout>
+<LinearLayout
+    android:id="@+id/tranactionll" 
+    android:gravity="center_vertical"
+    android:layout_width="match_parent"
+    android:layout_height="65dp"
+    >
+    <ImageView 
+        android:layout_marginLeft="10dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/daijiaoyi"
+        />
+    <LinearLayout 
+        android:layout_marginLeft="10dp"
+        android:orientation="vertical"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        >
+        <LinearLayout 
+            android:gravity="center"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            >
+            <TextView
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:text="交易消息"
+                android:layout_height="wrap_content"
+                android:textSize="17dp"
+                />
+            <TextView 
+                android:id="@+id/firstdate"
+                android:layout_marginRight="10dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+               
+                />
+        </LinearLayout>
+        <TextView
+            android:id="@+id/fistcontext"
+            android:layout_marginTop="7dp" 
+            android:textColor="#9D9D9D"
+            android:textSize="15dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+           
+            />
+    </LinearLayout>
+    
+</LinearLayout>
+
+<View 
+    android:layout_width="match_parent"
+    android:layout_height="0.5dp"
+    android:background="#c3c3c3"
+    /><LinearLayout 
+    android:visibility="invisible"
+    android:gravity="center_vertical"
+    android:layout_width="match_parent"
+    android:layout_height="65dp"
+    >
+    <ImageView 
+        android:layout_marginLeft="10dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/liuyan1"
+        />
+    <LinearLayout 
+        android:layout_marginLeft="10dp"
+        android:orientation="vertical"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        >
+        <LinearLayout 
+            android:gravity="center"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            >
+            <TextView
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:text="留言消息"
+                android:layout_height="wrap_content"
+                android:textSize="17dp"
+                />
+            <TextView 
+                android:layout_marginRight="10dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="17/06/02"
+                />
+        </LinearLayout>
+        <TextView 
+            android:layout_marginTop="7dp"
+            android:textColor="#9D9D9D"
+            android:textSize="15dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="孙文斌给你留了言，请尽快回复！"
+            />
+    </LinearLayout>
+    
+</LinearLayout>
+<View 
+    android:visibility="invisible"
+    android:layout_width="match_parent"
+    android:layout_height="0.5dp"
+    android:background="#c3c3c3"
+    />
+</LinearLayout>

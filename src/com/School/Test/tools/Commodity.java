@@ -1,23 +1,31 @@
 package com.School.Test.tools;
 
 public class Commodity {
+	private String headpath;
+	public String getHeadpath() {
+		return headpath;
+	}
+	public void setHeadpath(String headpath) {
+		this.headpath = headpath;
+	}
+	public Commodity(){
+		
+	}
 	//username,title,context,imagepath1,imagepath2,imagepath3,yijia,money,type,date
-private String username;
-public Commodity(){
-	
-}
-public Commodity(String username,String title,String context,String imagepath1,String imagepath2,String imagepath3,String yijia,String money,String type,String date){
-	this.username=username;
-	this.title=title;
-	this.context=context;
-	this.imagepath1=imagepath1;
-	this.imagepath2=imagepath2;
-	this.imagepath3=imagepath3;
-	this.yijia=yijia;
-	this.money=money;
-	this.date=date;
-	this.type=type;
-}
+	public Commodity(String username,String title,String context,String imagepath1,String imagepath2,String imagepath3,String yijia,String money,String type,String date,String headpath){
+		this.username=username;
+		this.title=title;
+		this.context=context;
+		this.imagepath1=imagepath1;
+		this.imagepath2=imagepath2;
+		this.imagepath3=imagepath3;
+		this.yijia=yijia;
+		this.money=money;
+		this.date=date;
+		this.type=type;
+		this.headpath=headpath;
+	}
+	private String username;
 public String getUsername() {
 	return username;
 }

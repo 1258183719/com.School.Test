@@ -12,10 +12,12 @@ import com.School.Test.schoolgo.R;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.WebView.FindListener;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
@@ -23,14 +25,20 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 public class LazyAdapter extends BaseAdapter {
+	private CommoditySingle comm;
 	 private List<Map<String, Object>> data; 
+	 private String name;
     private Activity activity;
     //private String[] data;
     private static LayoutInflater inflater=null;
     public ImageLoader imageLoader; 
     
     public LazyAdapter(Activity a,List<Map<String, Object>> data) {
+    	
+    	comm=CommoditySingle.CommoditySingle();
         activity = a;
+        SharedPreferences sp=a.getSharedPreferences("data",a.MODE_PRIVATE);
+        name=sp.getString("name", "");
         this.data=data;
         inflater = (LayoutInflater)activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         imageLoader=new ImageLoader(activity.getApplicationContext());
@@ -62,11 +70,9 @@ public class LazyAdapter extends BaseAdapter {
         View vi=convertView;
         if(convertView==null)
             vi = inflater.inflate(R.layout.commodity_list_item, null);
-        //   TextView text=(TextView)vi.findViewById(R.id.text);;
-         //  ImageView image=(ImageView)vi.findViewById(R.id.image);
-        //   ImageView image2=(ImageView)vi.findViewById(R.id.image2);
         //    text.setText("item "+position);
         TextView titletv=BaseViewHolder.get(vi,R.id.titletv);  
+        RoundImageView riv=BaseViewHolder.get(vi, R.id.portrait);
         TextView nametv=BaseViewHolder.get(vi,R.id.nameshow); 
         TextView timetv=BaseViewHolder.get(vi,R.id.timetv); 
         TextView yijiatv=BaseViewHolder.get(vi,R.id.yijiatv); 
@@ -109,6 +115,25 @@ public class LazyAdapter extends BaseAdapter {
    			e.printStackTrace();
    		}
            imageLoader.DisplayImage(StreamTools.ip+"/SchoolGoServer/DownLoadImageServlet"+sb, image3,false);
+           
+           
+          
+         if(comm.head!=null&&data.get(position).get("name").equals(name)){
+        	 riv.setImageBitmap(comm.head);
+	         }else if(data.get(position).get("head").toString().length()>=7){
+        	   sb = new StringBuilder();
+        		try {
+        			sb.append("?path=")
+        			.append(URLEncoder.encode(data.get(position).get("head").toString(),"utf-8"));
+        		} catch (UnsupportedEncodingException e) {
+        			// TODO 自动生成的 catch 块
+        			e.printStackTrace();
+        		}
+        		
+                  imageLoader.DisplayImage(StreamTools.ip+"/SchoolGoServer/DownLoadImageServlet"+sb, riv,false);
+    		}
+    		 
+           
            
            //   imageLoader.DisplayImage(data[position], image2);
         return vi;

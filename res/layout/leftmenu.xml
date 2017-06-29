@@ -42,6 +42,7 @@
            android:layout_height="match_parent"
            >
            <com.School.Test.ImageUtil.RoundImageView
+               android:id="@+id/headiv"
                android:layout_marginTop="2dp"
                android:layout_marginLeft="10dp"
           android:layout_width="90dp"

@@ -39,7 +39,7 @@
                     android:background="@drawable/so"
                     />
                 <EditText
-                android:id="@+id/numberedt"
+                android:id="@+id/ssedt"
          android:layout_marginLeft="10dp"
          android:textSize="20dp"
          android:textColorHint="#ffffff"
@@ -49,8 +49,7 @@
             android:layout_height="wrap_content"
             android:background="@null"
             android:hint="搜索商品"
-            android:inputType="number"
-            android:textColor="#cf4a3a"
+            android:textColor="#ffffff"
             android:paddingBottom="5dip"
             android:paddingTop="5dip" />
             </LinearLayout>

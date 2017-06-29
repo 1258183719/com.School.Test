@@ -1,5 +1,5 @@
 package com.School.Test.schoolgo;
-
+ 
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
@@ -131,18 +131,21 @@ protected void onCreate(Bundle savedInstanceState) {
 						@Override
 						public void run()
 						{
-							Toast.makeText(MainActivity.this,res, 0).show();
+							
 						//打开展示界面
-							if(res.equals("登录成功！")){
+							if(!res.equals("用户不存在！")){
 								SharedPreferences.Editor sp=getSharedPreferences("data",MODE_PRIVATE).edit();
 								sp.putString("name", number);
+								sp.putString("qq", res);
 								sp.commit();
+								Toast.makeText(MainActivity.this,"登录成功！", 0).show();
 								Intent i=new Intent(MainActivity.this,Exhibition.class);
 								startActivity(i);
-								finish();
-							}
-						
+								finish();	
+						}else {
+							Toast.makeText(MainActivity.this,"登录失败！", 0).show();
 						}
+							}
 					});
 				} else
 				{

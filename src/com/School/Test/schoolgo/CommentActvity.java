@@ -106,4 +106,7 @@ fsbtn.setOnClickListener(new OnClickListener() {
 	}
 });
 }
+public void ccolse(View v){
+	finish();
+}
 }

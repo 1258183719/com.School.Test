@@ -30,6 +30,7 @@
         </activity>
         <activity android:name=".ForgotedtActivity"></activity>
         <activity android:name=".AddcommodityActivity"></activity>
+        <activity android:name=".TransactionMessageActivity"></activity>
         <activity android:name=".SelectioActivity"
                >
         </activity>

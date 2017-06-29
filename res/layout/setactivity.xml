@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+    <LinearLayout 
+        android:layout_height="50dp"
+        android:layout_width="match_parent"
+        android:background="#00b8ee"
+        android:gravity="center"
+        >
+         <TextView 
+             android:onClick="sclose"
+            android:layout_marginLeft="17dp"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:textColor="#ffffff"
+            android:textSize="17dp"
+            android:text="返回"
+            />
+        <TextView 
+            android:gravity="center"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:textColor="#ffffff"
+            android:textSize="23dp"
+            android:text="设置"
+            
+            />
+        <TextView 
+            android:visibility="invisible"
+            android:text="返回"
+            android:layout_marginRight="17dp"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:textColor="#D32626"
+            android:textSize="17dp"
+            />
+    </LinearLayout>
+    <View 
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:background="#e5e5e5"
+        />
+<LinearLayout
+    android:id="@+id/headimagell"
+    android:gravity="center_vertical" 
+    android:layout_width="match_parent"
+    android:layout_height="60dp"
+    >
+        <TextView 
+            
+            android:layout_marginLeft="10dp"
+            android:textSize="17dp"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="我的头像"
+            />
+        <com.School.Test.ImageUtil.RoundImageView
+            android:id="@+id/headimage"
+               android:layout_marginLeft="10dp"
+          android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:src="@drawable/back"
+           />
+        <ImageView 
+            
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/shezhinr"
+            />
+</LinearLayout>
+<View 
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#e5e5e5"
+        />
+<LinearLayout
+    android:gravity="center_vertical" 
+    android:layout_width="match_parent"
+    android:layout_height="40dp"
+    >
+        <TextView 
+            
+            android:layout_marginLeft="10dp"
+            android:textSize="17dp"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="我的昵称"
+            />
+        <TextView
+            android:id="@+id/snametv"
+            android:textColor="#b1b1b1"
+               android:layout_marginLeft="10dp"
+          android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+			android:text="孙文斌"
+           />
+        <ImageView 
+            android:visibility="invisible"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/shezhinr"
+            />
+</LinearLayout>
+<View 
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#e5e5e5"
+        />
+<LinearLayout
+     android:id="@+id/setqqll"
+    android:gravity="center_vertical" 
+    android:layout_width="match_parent"
+    android:layout_height="40dp"
+    >
+        <TextView 
+            android:layout_marginLeft="10dp"
+            android:textSize="17dp"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="设置QQ"
+            />
+        <TextView 
+            android:id="@+id/sqqtv"
+            android:textColor="#b1b1b1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="1258183719"
+            />
+        <ImageView 
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/shezhinr"
+            />
+</LinearLayout>
+<View 
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#e5e5e5"
+        />
+<View 
+        android:layout_width="match_parent"
+        android:layout_height="10dp"
+        android:background="#e5e5e5"
+        />
+
+<LinearLayout
+    android:id="@+id/changepassll"
+    android:gravity="center_vertical" 
+    android:layout_width="match_parent"
+    android:layout_height="40dp"
+    >
+        <TextView 
+            
+            android:layout_marginLeft="10dp"
+            android:textSize="17dp"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="修改密码"
+            />
+        
+        <ImageView 
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/shezhinr"
+            />
+</LinearLayout>
+<View 
+        android:layout_width="match_parent"
+        android:layout_height="10dp"
+        android:background="#e5e5e5"
+        />
+<View 
+    android:layout_width="match_parent"
+    android:layout_height="0dp"
+    android:layout_weight="1"
+    />
+<Button 
+    android:id="@+id/backnumll"
+    android:textColor="#ffffff"
+    android:textSize="17dp"
+    android:background="#fe5709"
+    android:layout_width="match_parent"
+    android:layout_height="50dp"
+    android:text="退出当前账户"
+    />
+</LinearLayout>
